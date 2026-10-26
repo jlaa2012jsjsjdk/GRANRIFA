@@ -129,9 +129,9 @@
         /* Grid */
         .grid-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(95px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
             gap: 8px;
-            max-height: 450px;
+            max-height: 480px;
             overflow-y: auto;
             padding: 15px;
             background: #05160e;
@@ -245,7 +245,6 @@
     <div class="card">
         <h2 style="color: var(--primary-gold);">Premio Principal</h2>
         
-        <!-- Carrusel / Álbum de Fotos -->
         <div style="position: relative; max-width: 450px; margin: 15px auto;">
             <img id="carousel-img" src="bicimotoelectrica.jpg" alt="Bicimoto Eléctrica KIWO" class="main-image" style="margin: 0; width: 100%;">
             
@@ -261,7 +260,6 @@
         
         <p>Gana una magnífica bicimoto eléctrica ideal para tus trayectos diarios. Rápida, ecológica y práctica.</p>
         
-        <!-- Cláusula legal exacta -->
         <div class="clause-box">
             <strong>⚠️ Aviso Legal y de Variación:</strong> Las imágenes mostradas en este sitio son puramente ilustrativas. Los accesorios, componentes, diseño de piezas, detalles gráficos y el tono exacto del color pueden variar o cambiar según la disponibilidad del fabricante al momento de la entrega, sin que esto afecte la calidad, el funcionamiento general ni el valor del premio principal ofertado.
         </div>
@@ -288,4 +286,335 @@
         
         <div id="spin-message" style="margin-top: 20px; font-weight: bold; font-size: 1.1rem; min-height: 30px;"></div>
 
-        <div id="winner-box" style="display:none; background: #145a32; border: 2
+        <div id="winner-box" style="display:none; background: #145a32; border: 2px solid var(--accent-green); padding: 20px; border-radius: 10px; margin-top: 20px;">
+            <h2 style="color: var(--primary-gold);">🎉 ¡TENEMOS GANADOR OFICIAL! 🎉</h2>
+            <p id="winner-details" style="font-size: 1.2rem; font-weight: bold;"></p>
+        </div>
+    </div>
+
+    <!-- Matriz de 500 Folios -->
+    <div class="card" id="boletos">
+        <h2 style="color: var(--primary-gold);">📊 Matriz de 500 Folios (1,000 Números)</h2>
+        <p style="font-size: 0.9rem; color: #ccc;">Haz clic en un folio disponible para seleccionarlo o búscalo directamente.</p>
+        
+        <input type="text" id="search-input" placeholder="🔍 Buscar por Folio (ej. 0001) o Número..." onkeyup="filterGrid()">
+
+        <div class="grid-container" id="tickets-grid">
+            <div style="grid-column: 1 / -1; padding: 20px; color: var(--primary-gold);">Conectando con la base de datos de Firebase...</div>
+        </div>
+        
+        <div style="margin-top: 20px; text-align: left; background: #05160e; padding: 15px; border-radius: 8px;">
+            <h3 style="color: var(--primary-gold); margin-top:0;">🛒 Apartar Folios Seleccionados</h3>
+            <div id="selected-list" style="margin-bottom: 10px; color: #a3e4d7; font-weight: bold;">Ningún folio seleccionado</div>
+            <input type="text" id="buyer-name" placeholder="Tu Nombre Completo">
+            <input type="text" id="buyer-phone" placeholder="Tu Teléfono / WhatsApp">
+            <button class="btn" onclick="sendWhatsAppOrder()">💬 Enviar Apartado por WhatsApp</button>
+        </div>
+    </div>
+
+    <!-- Sección de Reglas y Legal -->
+    <div class="card" id="reglas">
+        <h2 style="color: var(--primary-gold);">⚖️ Bases, Reglas y Cláusula del Sorteo</h2>
+        <div style="text-align: left; font-size: 0.9rem; line-height: 1.6; color: #d5d8dc;">
+            <p><strong>1. Dinámica del Sorteo:</strong> Cada boleto consta de un número de folio (0001 al 0500) y dos números asignados de la suerte (000 al 999).</p>
+            <p><strong>2. Prórroga:</strong> Para garantizar la entrega formal del premio, se requiere la venta del 100% de los boletos antes del 30 de Noviembre. De no alcanzarse la meta, la fecha se prorrogará hasta completar la totalidad de la emisión.</p>
+            <p><strong>3. Entrega:</strong> El ganador podrá recoger personalmente la bici-moto en Maneadero, Baja California.</p>
+        </div>
+    </div>
+
+    <!-- Panel de Administración -->
+    <div class="card" id="admin">
+        <button class="btn btn-admin" onclick="toggleAdminPanel()">⚙️ Panel de Administración (PIN)</button>
+        
+        <div id="admin-panel" style="display: none; margin-top: 20px; text-align: left; border-top: 1px solid rgba(212,175,55,0.3); padding-top: 20px;">
+            <h3 style="color: var(--primary-gold);">Acceso Administrador</h3>
+            <input type="password" id="admin-pin" placeholder="Ingresa PIN (1234)">
+            <button class="btn" onclick="loginAdmin()">Entrar</button>
+            
+            <div id="admin-controls" style="display: none; margin-top: 15px;">
+                <hr style="border-color: rgba(212,175,55,0.2);">
+                <h4 style="color: var(--primary-gold);">Modificar Estado de Folio</h4>
+                <label>Folio (0001 a 0500):</label>
+                <input type="text" id="adm-folio" placeholder="Ej. 0001">
+                
+                <label>Nombre del Comprador:</label>
+                <input type="text" id="adm-name" placeholder="Nombre completo">
+
+                <label>Estado:</label>
+                <select id="adm-status">
+                    <option value="available">Disponible</option>
+                    <option value="reserved">Apartado</option>
+                    <option value="sold">Pagado / Vendido</option>
+                </select>
+
+                <button class="btn" onclick="saveTicketData()">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<a href="https://wa.me/5216461978574?text=Hola,%20quiero%20información%20sobre%20la%20rifa%20de%20la%20bicimoto" target="_blank" class="whatsapp-float">
+    💬 WhatsApp
+</a>
+
+<!-- Carga de SDKs de Firebase Realtime Database -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyCsyyiu90Nemcg3Ueg4k6upr5VObiydCVI",
+        authDomain: "gran-rifa-2757b.firebaseapp.com",
+        databaseURL: "https://gran-rifa-2757b-default-rtdb.firebaseio.com",
+        projectId: "gran-rifa-2757b",
+        storageBucket: "gran-rifa-2757b.firebasestorage.app",
+        messagingSenderId: "709684132658",
+        appId: "1:709684132658:web:c1c69a117e2db5a3adf52b"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const ticketsRef = db.ref('tickets');
+
+    // Álbum de fotos
+    const listaFotos = [
+        'bicimotoelectrica.jpg',
+        'bicimotoelectrica2.jpg',
+        'bicimotoelectrica3.jpg',
+        'bicimotoelectrica4.jpg',
+        'bicimotoelectrica5.jpg',
+        'bicimotoelectrica6.jpg'
+    ];
+    let fotoActualIndex = 0;
+
+    function nextFoto() {
+        fotoActualIndex = (fotoActualIndex + 1) % listaFotos.length;
+        actualizarFoto();
+    }
+
+    function prevFoto() {
+        fotoActualIndex = (fotoActualIndex - 1 + listaFotos.length) % listaFotos.length;
+        actualizarFoto();
+    }
+
+    function actualizarFoto() {
+        const imgElem = document.getElementById('carousel-img');
+        const counterElem = document.getElementById('photo-counter');
+        if(imgElem) {
+            imgElem.src = listaFotos[fotoActualIndex];
+            counterElem.innerText = `${fotoActualIndex + 1} / ${listaFotos.length}`;
+        }
+    }
+
+    let ticketsData = {};
+    let selectedTickets = [];
+
+    // Escucha en tiempo real de Firebase
+    ticketsRef.on('value', (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+            ticketsData = data;
+            renderGrid(document.getElementById('search-input') ? document.getElementById('search-input').value : '');
+        } else {
+            initTicketsInFirebase();
+        }
+    }, (error) => {
+        console.error("Error al leer Firebase:", error);
+        document.getElementById('tickets-grid').innerHTML = `<div style="grid-column:1/-1; color:red; padding:15px;">Error de conexión con Firebase. Revisa las reglas de la base de datos.</div>`;
+    });
+
+    function initTicketsInFirebase() {
+        let initialData = {};
+        for (let i = 1; i <= 500; i++) {
+            let fStr = String(i).padStart(4, '0');
+            let num1 = String((i - 1) % 1000).padStart(3, '0');
+            let num2 = String((i + 499) % 1000).padStart(3, '0');
+            initialData[fStr] = { num1: num1, num2: num2, status: 'available', buyer: '' };
+        }
+        ticketsRef.set(initialData).then(() => {
+            console.log("Folios inicializados correctamente en Firebase.");
+        });
+    }
+
+    function renderGrid(filter = '') {
+        const grid = document.getElementById('tickets-grid');
+        if (!grid) return;
+        grid.innerHTML = '';
+        
+        for (let i = 1; i <= 500; i++) {
+            let fStr = String(i).padStart(4, '0');
+            let t = ticketsData[fStr] || { num1: '---', num2: '---', status: 'available', buyer: '' };
+            
+            if (filter && !fStr.includes(filter) && !t.num1.includes(filter) && !t.num2.includes(filter) && !t.buyer.toLowerCase().includes(filter.toLowerCase())) {
+                continue;
+            }
+
+            let div = document.createElement('div');
+            let statusClass = t.status;
+            if (selectedTickets.includes(fStr)) statusClass += ' selected';
+            
+            div.className = `grid-item ${statusClass}`;
+            div.innerHTML = `<strong>F:${fStr}</strong><br><span style="font-size:0.7rem">${t.num1}, ${t.num2}</span>`;
+            
+            if (t.status === 'available') {
+                div.onclick = () => toggleSelectTicket(fStr);
+            } else {
+                div.title = `Ocupado por: ${t.buyer || 'Reservado'}`;
+            }
+            grid.appendChild(div);
+        }
+    }
+
+    function toggleSelectTicket(fStr) {
+        let index = selectedTickets.indexOf(fStr);
+        if (index > -1) {
+            selectedTickets.splice(index, 1);
+        } else {
+            selectedTickets.push(fStr);
+        }
+        renderGrid(document.getElementById('search-input').value);
+        updateSelectedList();
+    }
+
+    function updateSelectedList() {
+        let listDiv = document.getElementById('selected-list');
+        if (!listDiv) return;
+        if (selectedTickets.length === 0) {
+            listDiv.innerText = "Ningún folio seleccionado";
+        } else {
+            listDiv.innerText = `Folios seleccionados: ${selectedTickets.join(', ')} ($${selectedTickets.length * 50} MXN)`;
+        }
+    }
+
+    function filterGrid() {
+        renderGrid(document.getElementById('search-input').value);
+    }
+
+    function sendWhatsAppOrder() {
+        let name = document.getElementById('buyer-name').value;
+        let phone = document.getElementById('buyer-phone').value;
+        if (selectedTickets.length === 0) {
+            alert('Por favor selecciona al menos un folio.');
+            return;
+        }
+        if (!name || !phone) {
+            alert('Por favor ingresa tu nombre y teléfono.');
+            return;
+        }
+
+        selectedTickets.forEach(fStr => {
+            ticketsRef.child(fStr).update({
+                status: 'reserved',
+                buyer: `${name} (${phone})`
+            });
+        });
+
+        let msg = `Hola, quiero apartar los folios: ${selectedTickets.join(', ')} para la rifa de la bicimoto. Mi nombre es ${name}. Total a pagar: $${selectedTickets.length * 50} MXN`;
+        window.open(`https://wa.me/5216461978574?text=${encodeURIComponent(msg)}`, '_blank');
+        
+        selectedTickets = [];
+        updateSelectedList();
+    }
+
+    // Cuenta regresiva
+    const countDownDate = new Date("Nov 30, 2026 23:59:59").getTime();
+    setInterval(() => {
+        let now = new Date().getTime();
+        let distance = countDownDate - now;
+        let dElem = document.getElementById("days");
+        if(dElem) {
+            dElem.innerText = Math.floor(distance / (1000 * 60 * 60 * 24));
+            document.getElementById("hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            document.getElementById("minutes").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            document.getElementById("seconds").innerText = Math.floor((distance % (1000 * 60)) / 1000);
+        }
+    }, 1000);
+
+    // Tómbola
+    let currentSpinCount = 1;
+    function spinWheel() {
+        if (currentSpinCount > 21) return;
+        let btn = document.getElementById('btn-spin-wheel');
+        let display = document.getElementById('roulette-number');
+        let msg = document.getElementById('spin-message');
+        btn.disabled = true;
+        msg.innerText = "Girando tómbola...";
+
+        let counter = 0;
+        let interval = setInterval(() => {
+            let randomNum = Math.floor(Math.random() * 1000);
+            display.innerText = String(randomNum).padStart(3, '0');
+            counter++;
+            
+            if (counter > 25) {
+                clearInterval(interval);
+                let finalNum = String(Math.floor(Math.random() * 1000)).padStart(3, '0');
+                display.innerText = finalNum;
+
+                if (currentSpinCount < 21) {
+                    msg.innerHTML = `❌ Tiro #${currentSpinCount}: El número <strong>${finalNum}</strong> queda descartado.`;
+                    currentSpinCount++;
+                    document.getElementById('spin-counter').innerText = currentSpinCount;
+                    btn.disabled = false;
+                } else {
+                    msg.innerHTML = `🏆 ¡EL TIRO 21 HA DEFINIDO AL GANADOR!`;
+                    btn.disabled = true;
+                    let winnerFolio = "No asignado";
+                    let winnerInfo = "Sin registro de comprador";
+                    for (let f in ticketsData) {
+                        if (ticketsData[f].num1 === finalNum || ticketsData[f].num2 === finalNum) {
+                            winnerFolio = f;
+                            winnerInfo = ticketsData[f].buyer ? `Comprador: ${ticketsData[f].buyer}` : `Folio ${f} (Sin nombre registrado)`;
+                            break;
+                        }
+                    }
+                    let winBox = document.getElementById('winner-box');
+                    let winDetails = document.getElementById('winner-details');
+                    winDetails.innerHTML = `Número Sorteado: <span style="color:var(--primary-gold)">${finalNum}</span><br>Folio Ganador: <span style="color:var(--primary-gold)">${winnerFolio}</span><br>${winnerInfo}`;
+                    winBox.style.display = 'block';
+                }
+            }
+        }, 80);
+    }
+
+    // Panel admin
+    function toggleAdminPanel() {
+        let p = document.getElementById('admin-panel');
+        if(p) p.style.display = p.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function loginAdmin() {
+        let pin = document.getElementById('admin-pin').value;
+        if (pin === '1234') {
+            document.getElementById('admin-controls').style.display = 'block';
+            alert('¡Acceso concedido!');
+        } else {
+            alert('PIN incorrecto (Prueba con 1234)');
+        }
+    }
+
+    function saveTicketData() {
+        let f = document.getElementById('adm-folio').value.padStart(4, '0');
+        let name = document.getElementById('adm-name').value;
+        let status = document.getElementById('adm-status').value;
+        
+        if (ticketsData[f]) {
+            ticketsRef.child(f).update({
+                buyer: name,
+                status: status
+            }, (error) => {
+                if (!error) {
+                    alert(`Folio ${f} actualizado en Firebase.`);
+                } else {
+                    alert('Error al guardar en Firebase: ' + error.message);
+                }
+            });
+        } else {
+            alert('Folio no válido (0001 a 0500)');
+        }
+    }
+</script>
+
+</body>
+</html>
