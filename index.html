@@ -6,261 +6,323 @@
     <title>Gran Rifa - Bicimoto Eléctrica KIWO</title>
     <style>
         :root {
-            --primary: #1b4332;
-            --secondary: #d4af37;
-            --accent: #2d6a4f;
-            --bg: #f8f9fa;
-            --text: #212529;
+            --bg-dark: #071f14;
+            --bg-card: #0c2c1e;
+            --primary-gold: #d4af37;
+            --text-light: #f8f9fa;
+            --accent-green: #2ecc71;
+            --danger-red: #e74c3c;
+            --warning-yellow: #f1c40f;
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
+            background-color: var(--bg-dark);
+            color: var(--text-light);
             margin: 0;
             padding: 0;
+            background-image: radial-gradient(rgba(212, 175, 55, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
         }
         header {
-            background: linear-gradient(135deg, #081c15, #1b4332);
-            color: white;
+            background: linear-gradient(135deg, #05160e, #0c2c1e);
             text-align: center;
-            padding: 25px 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            border-bottom: 4px solid var(--secondary);
+            padding: 30px 15px;
+            border-bottom: 3px solid var(--primary-gold);
         }
-        h1 { margin: 0; font-size: 1.8rem; color: #ffd700; text-transform: uppercase; letter-spacing: 1px; }
-        .subtitle { font-size: 0.95rem; opacity: 0.9; margin-top: 5px; }
-        
+        .badge-top {
+            background-color: var(--primary-gold);
+            color: #000;
+            font-weight: bold;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            display: inline-block;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+        h1 { margin: 0; font-size: 2.2rem; color: var(--primary-gold); text-transform: uppercase; letter-spacing: 1px; }
+        .subtitle { font-size: 1rem; color: #a3e4d7; margin-top: 5px; }
+
+        .nav-bar {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            background: #05160e;
+            padding: 12px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            flex-wrap: wrap;
+        }
+        .nav-btn {
+            background: transparent;
+            color: var(--primary-gold);
+            border: 1px solid var(--primary-gold);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+        .nav-btn:hover, .nav-btn.active {
+            background: var(--primary-gold);
+            color: #000;
+        }
+
         .container {
-            max-width: 900px;
-            margin: 20px auto;
+            max-width: 950px;
+            margin: 25px auto;
             padding: 15px;
         }
         .card {
-            background: white;
+            background-color: var(--bg-card);
+            border: 1px solid rgba(212, 175, 55, 0.3);
             border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-            padding: 20px;
-            margin-bottom: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
             text-align: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
         }
         .main-image {
             max-width: 100%;
             height: auto;
             border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-            margin: 10px 0;
-        }
-        .price-tag {
-            font-size: 1.5rem;
-            color: var(--primary);
-            font-weight: bold;
-            background: #e8f5e9;
-            display: inline-block;
-            padding: 8px 20px;
-            border-radius: 50px;
-            margin: 10px 0;
-            border: 2px dashed #4caf50;
+            border: 2px solid var(--primary-gold);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            margin: 15px 0;
         }
         .clause-box {
-            background-color: #fff8e1;
-            border-left: 4px solid #ffc107;
-            padding: 12px;
-            margin: 15px 0;
+            background-color: rgba(241, 196, 15, 0.1);
+            border-left: 4px solid var(--warning-yellow);
+            padding: 15px;
+            margin: 20px 0;
             text-align: left;
-            font-size: 0.85rem;
-            color: #664d03;
+            font-size: 0.9rem;
+            color: #f39c12;
             border-radius: 4px;
+            line-height: 1.5;
         }
+
         /* Countdown */
         .countdown {
             display: flex;
             justify-content: center;
-            gap: 10px;
-            margin: 15px 0;
+            gap: 15px;
+            margin: 20px 0;
         }
         .time-box {
-            background: var(--primary);
-            color: white;
-            padding: 8px 12px;
+            background: #05160e;
+            border: 1px solid var(--primary-gold);
+            color: var(--primary-gold);
+            padding: 12px;
             border-radius: 8px;
-            min-width: 50px;
+            min-width: 60px;
         }
-        .time-box span { display: block; font-size: 1.2rem; font-weight: bold; }
-        .time-box label { font-size: 0.7rem; text-transform: uppercase; opacity: 0.8; }
+        .time-box span { display: block; font-size: 1.5rem; font-weight: bold; }
+        .time-box label { font-size: 0.7rem; text-transform: uppercase; color: #aaa; }
 
-        /* Sections */
-        .section-title {
-            color: var(--primary);
-            border-bottom: 2px solid var(--secondary);
-            padding-bottom: 5px;
-            margin-top: 25px;
+        /* Grid */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(95px, 1fr));
+            gap: 8px;
+            max-height: 450px;
+            overflow-y: auto;
+            padding: 15px;
+            background: #05160e;
+            border-radius: 8px;
+            margin-top: 15px;
+            border: 1px solid rgba(212,175,55,0.2);
             text-align: left;
-            font-size: 1.2rem;
         }
+        .grid-item {
+            background: #0c2c1e;
+            border: 1px solid #1e8449;
+            padding: 8px;
+            font-size: 0.8rem;
+            border-radius: 6px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .grid-item:hover { transform: scale(1.03); border-color: var(--primary-gold); }
+        .grid-item.sold { background: #78281f; color: #fadbd8; border-color: var(--danger-red); cursor: not-allowed; }
+        .grid-item.reserved { background: #7d6608; color: #fcf3cf; border-color: var(--warning-yellow); cursor: not-allowed; }
+        .grid-item.selected { background: #1e8449; color: #fff; border-color: #2ecc71; font-weight: bold; }
 
-        /* Tombola / Ruleta */
+        /* Tombola */
         .tombola-container {
-            background: #111;
-            color: white;
+            background: #030f09;
+            border: 2px solid var(--primary-gold);
             border-radius: 12px;
-            padding: 20px;
-            margin-top: 20px;
-            border: 3px solid var(--secondary);
+            padding: 25px;
         }
         .roulette-display {
-            font-size: 3.5rem;
+            font-size: 4rem;
             font-family: monospace;
-            background: #222;
-            color: #00ffcc;
-            padding: 15px;
+            background: #000;
+            color: var(--accent-green);
+            padding: 20px;
             border-radius: 10px;
-            letter-spacing: 5px;
-            margin: 15px 0;
-            border: 2px solid #444;
-            box-shadow: inset 0 0 15px rgba(0,0,0,0.8);
+            letter-spacing: 8px;
+            margin: 20px 0;
+            border: 2px solid #1b4332;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.9);
         }
         .btn-spin {
-            background: linear-gradient(135deg, #ffc107, #ff9800);
+            background: linear-gradient(135deg, var(--primary-gold), #b7950b);
             color: #000;
             font-weight: bold;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             border: none;
-            padding: 12px 25px;
+            padding: 15px 30px;
             border-radius: 50px;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(255,152,0,0.4);
+            box-shadow: 0 4px 15px rgba(212,175,55,0.4);
             transition: 0.2s;
         }
         .btn-spin:hover { transform: scale(1.05); }
-        .btn-spin:disabled { background: #555; color: #888; cursor: not-allowed; transform: none; }
+        .btn-spin:disabled { background: #444; color: #888; cursor: not-allowed; transform: none; }
 
-        /* Grid - Altura amplia para que se desplieguen todos los folios */
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
-            gap: 6px;
-            max-height: 450px;
-            overflow-y: auto;
-            padding: 10px;
-            background: #f1f3f5;
-            border-radius: 8px;
-            margin-top: 10px;
-            border: 1px solid #dee2e6;
-        }
-        .grid-item {
-            background: #fff;
-            border: 1px solid #ced4da;
-            padding: 6px;
-            font-size: 0.8rem;
-            border-radius: 4px;
-            text-align: center;
-        }
-        .grid-item.sold { background: #ffcccc; color: #c92a2a; border-color: #ffa8a8; font-weight: bold; }
-        .grid-item.reserved { background: #fff3bf; color: #f59f00; border-color: #ffe066; font-weight: bold; }
-
-        /* Buttons & Forms */
         .btn {
-            background-color: #25d366;
-            color: white;
+            background-color: var(--accent-green);
+            color: #000;
             border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
+            padding: 12px 25px;
+            border-radius: 25px;
             font-weight: bold;
             cursor: pointer;
             text-decoration: none;
             display: inline-block;
-            margin: 5px;
+            margin: 10px 5px;
+            text-transform: uppercase;
         }
-        .btn-admin { background-color: #343a40; }
-        input, select { padding: 8px; margin: 5px 0; width: 100%; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
-        
-        .winner-announcement {
-            background: #d4edda;
-            border: 2px solid #28a745;
-            color: #155724;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 15px;
-            display: none;
-            animation: popUp 0.5s ease;
+        .btn-admin { background-color: #34495e; color: #fff; }
+        input, select { padding: 10px; margin: 8px 0; width: 100%; box-sizing: border-box; background: #05160e; border: 1px solid rgba(212,175,55,0.4); color: #fff; border-radius: 6px; }
+
+        .whatsapp-float {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background-color: #25d366;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        @keyframes popUp { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>¡Gran Rifa de Bicimoto Eléctrica!</h1>
-    <div class="subtitle">Sorteo Oficial 30 de Noviembre • Entrega en Maneadero, B.C.</div>
+    <div class="badge-top">👑 Sorteo Oficial de la Suerte</div>
+    <h1>Gran Rifa Bicimoto Eléctrica</h1>
+    <div class="subtitle">Modelo Bici-Moto KIWO • 100% Ecológica</div>
 </header>
 
-<div class="container">
+<nav class="nav-bar">
+    <a href="#inicio" class="nav-btn active">Inicio</a>
+    <a href="#boletos" class="nav-btn">Elegir Boletos</a>
+    <a href="#tombola" class="nav-btn">Ruleta / Tómbola</a>
+    <a href="#reglas" class="nav-btn">Reglas y Legal</a>
+    <a href="#admin" class="nav-btn">Admin</a>
+</nav>
+
+<div class="container" id="inicio">
     
-    <!-- Tarjeta Principal -->
+    <!-- Tarjeta Principal con la foto exacta -->
     <div class="card">
-        <img src="bicimotoelectrica.jpg" alt="Bicimoto Eléctrica" class="main-image">
-        <div class="price-tag">Boleto: $50 MXN (¡2 Oportunidades!)</div>
+        <h2 style="color: var(--primary-gold);">Premio Principal</h2>
+        <img src="bicimotoelectrica.jpg" alt="Bicimoto Eléctrica KIWO" class="main-image">
+        
+        <div style="font-size: 1.6rem; color: var(--accent-green); font-weight: bold; margin: 15px 0;">
+            Boleto: $50 MXN (¡2 Oportunidades del 000 al 999!)
+        </div>
+        
         <p>Gana una magnífica bicimoto eléctrica ideal para tus trayectos diarios. Rápida, ecológica y práctica.</p>
         
-        <!-- Cláusula legal -->
+        <!-- Cláusula legal exacta -->
         <div class="clause-box">
-            <strong>Aviso Legal y de Variación:</strong> Las imágenes mostradas en este sitio son puramente ilustrativas. Los accesorios, componentes, diseño de piezas, detalles gráficos y el tono exacto del color pueden variar o cambiar según la disponibilidad del fabricante al momento de la entrega, sin que esto afecte la calidad, el funcionamiento general ni el valor del premio principal ofertado.
+            <strong>⚠️ Aviso Legal y de Variación:</strong> Las imágenes mostradas en este sitio son puramente ilustrativas. Los accesorios, componentes, diseño de piezas, detalles gráficos y el tono exacto del color pueden variar o cambiar según la disponibilidad del fabricante al momento de la entrega, sin que esto afecte la calidad, el funcionamiento general ni el valor del premio principal ofertado.
         </div>
 
-        <h3>Falta para el Sorteo:</h3>
+        <h3 style="color: var(--primary-gold);">El sorteo se realizará el 30 de Noviembre</h3>
         <div class="countdown">
             <div class="time-box"><span id="days">00</span><label>Días</label></div>
             <div class="time-box"><span id="hours">00</span><label>Horas</label></div>
             <div class="time-box"><span id="minutes">00</span><label>Min</label></div>
             <div class="time-box"><span id="seconds">00</span><label>Seg</label></div>
         </div>
-
-        <a href="https://wa.me/5216460000000?text=Hola,%20quiero%20apartar%20boletos%20para%20la%20rifa%20de%20la%20bicimoto" target="_blank" class="btn">💬 Apartar por WhatsApp</a>
     </div>
 
-    <!-- Tómbola / Ruleta en Vivo -->
-    <div class="card tombola-container">
-        <h2>🎰 Tómbola Oficial en Vivo</h2>
+    <!-- Tómbola Oficial (21 Tiros) -->
+    <div class="card tombola-container" id="tombola">
+        <h2 style="color: var(--primary-gold);">🎰 Tómbola Oficial en Vivo</h2>
         <p>Dinámica: Se realizarán 20 tiros de descarte y <strong>el tiro 21 será el ganador oficial</strong>.</p>
         
-        <div>Tiro actual: <span id="spin-counter" style="font-weight:bold; color: #ffc107; font-size: 1.2rem;">1</span> de 21</div>
+        <div>Tiro actual: <span id="spin-counter" style="font-weight:bold; color: var(--warning-yellow); font-size: 1.3rem;">1</span> de 21</div>
         
         <div class="roulette-display" id="roulette-number">000</div>
         
-        <button class="btn-spin" id="btn-spin-wheel" onclick="spinWheel()">🎲 Girar Tómbola</button>
+        <button class="btn-spin" id="btn-spin-wheel" onclick="spinWheel()">🎲 Girar Tómbola de 1,000 Números</button>
         
-        <div id="spin-message" style="margin-top: 15px; font-weight: bold; font-size: 1.1rem; min-height: 30px;"></div>
+        <div id="spin-message" style="margin-top: 20px; font-weight: bold; font-size: 1.1rem; min-height: 30px;"></div>
 
-        <div id="winner-box" class="winner-announcement">
-            <h2>🎉 ¡TENEMOS GANADOR OFICIAL! 🎉</h2>
-            <p id="winner-details" style="font-size: 1.1rem; font-weight: bold;"></p>
+        <div id="winner-box" style="display:none; background: #145a32; border: 2px solid var(--accent-green); padding: 20px; border-radius: 10px; margin-top: 20px;">
+            <h2 style="color: var(--primary-gold);">🎉 ¡TENEMOS GANADOR OFICIAL! 🎉</h2>
+            <p id="winner-details" style="font-size: 1.2rem; font-weight: bold;"></p>
         </div>
     </div>
 
     <!-- Matriz de 500 Folios -->
-    <div class="card">
-        <h3 class="section-title">📊 Matriz de 500 Folios (500 Boletos / 1,000 Números)</h3>
-        <p style="font-size: 0.85rem; text-align: left;">Cada boleto cuenta con 2 números asignados del 000 al 999.</p>
+    <div class="card" id="boletos">
+        <h2 style="color: var(--primary-gold);">📊 Matriz de 500 Folios (1,000 Números)</h2>
+        <p style="font-size: 0.9rem; color: #ccc;">Haz clic en un folio disponible para seleccionarlo o búscalo directamente.</p>
         
-        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-            <input type="text" id="search-input" placeholder="Buscar por Folio (ej. 0001) o Número..." onkeyup="filterGrid()">
-        </div>
+        <input type="text" id="search-input" placeholder="🔍 Buscar por Folio (ej. 0001) o Número..." onkeyup="filterGrid()">
 
         <div class="grid-container" id="tickets-grid"></div>
+        
+        <div style="margin-top: 20px; text-align: left; background: #05160e; padding: 15px; border-radius: 8px;">
+            <h3 style="color: var(--primary-gold); margin-top:0;">🛒 Apartar Folios Seleccionados</h3>
+            <div id="selected-list" style="margin-bottom: 10px; color: #a3e4d7; font-weight: bold;">Ninguno seleccionado</div>
+            <input type="text" id="buyer-name" placeholder="Tu Nombre Completo">
+            <input type="text" id="buyer-phone" placeholder="Tu Teléfono / WhatsApp">
+            <button class="btn" onclick="sendWhatsAppOrder()">💬 Enviar Apartado por WhatsApp</button>
+        </div>
+    </div>
+
+    <!-- Sección de Reglas y Legal -->
+    <div class="card" id="reglas">
+        <h2 style="color: var(--primary-gold);">⚖️ Bases, Reglas y Cláusula del Sorteo</h2>
+        <div style="text-align: left; font-size: 0.9rem; line-height: 1.6; color: #d5d8dc;">
+            <p><strong>1. Dinámica del Sorteo:</strong> Cada boleto consta de un número de folio (0001 al 0500) y dos números asignados de la suerte (000 al 999).</p>
+            <p><strong>2. Prórroga:</strong> Para garantizar la entrega formal del premio, se requiere la venta del 100% de los boletos antes del 30 de Noviembre. De no alcanzarse la meta, la fecha se prorrogará hasta completar la totalidad de la emisión.</p>
+            <p><strong>3. Entrega:</strong> El ganador podrá recoger personalmente la bici-moto en Maneadero, Baja California.</p>
+        </div>
     </div>
 
     <!-- Panel de Administración -->
-    <div class="card">
+    <div class="card" id="admin">
         <button class="btn btn-admin" onclick="toggleAdminPanel()">⚙️ Panel de Administración (PIN)</button>
         
-        <div id="admin-panel" style="display: none; margin-top: 15px; text-align: left; border-top: 1px solid #ddd; padding-top: 15px;">
-            <h4>Acceso Administrador</h4>
+        <div id="admin-panel" style="display: none; margin-top: 20px; text-align: left; border-top: 1px solid rgba(212,175,55,0.3); padding-top: 20px;">
+            <h3 style="color: var(--primary-gold);">Acceso Administrador</h3>
             <input type="password" id="admin-pin" placeholder="Ingresa PIN (1234)">
             <button class="btn" onclick="loginAdmin()">Entrar</button>
             
             <div id="admin-controls" style="display: none; margin-top: 15px;">
-                <hr>
-                <h5>Modificar Estado de Folio</h5>
+                <hr style="border-color: rgba(212,175,55,0.2);">
+                <h4 style="color: var(--primary-gold);">Modificar Estado de Folio</h4>
                 <label>Folio (0001 a 0500):</label>
                 <input type="text" id="adm-folio" placeholder="Ej. 0001">
                 
@@ -271,7 +333,7 @@
                 <select id="adm-status">
                     <option value="available">Disponible</option>
                     <option value="reserved">Apartado</option>
-                    <option value="sold">Pagado</option>
+                    <option value="sold">Pagado / Vendido</option>
                 </select>
 
                 <button class="btn" onclick="saveTicketData()">Guardar Cambios</button>
@@ -281,8 +343,13 @@
 
 </div>
 
+<a href="https://wa.me/5216460000000?text=Hola,%20quiero%20información%20sobre%20la%20rifa%20de%20la%20bicimoto" target="_blank" class="whatsapp-float">
+    💬 WhatsApp
+</a>
+
 <script>
     let ticketsData = JSON.parse(localStorage.getItem('rifa_tickets')) || {};
+    let selectedTickets = [];
 
     function initTickets() {
         if (Object.keys(ticketsData).length === 0) {
@@ -309,18 +376,61 @@
             }
 
             let div = document.createElement('div');
-            div.className = `grid-item ${t.status}`;
-            div.innerHTML = `<strong>F:${fStr}</strong><br><span style="font-size:0.75rem">${t.num1}, ${t.num2}</span>`;
-            div.title = `Folio: ${fStr}\nNúmeros: ${t.num1} y ${t.num2}\nEstado: ${t.status}\nComprador: ${t.buyer || 'N/A'}`;
+            let statusClass = t.status;
+            if (selectedTickets.includes(fStr)) statusClass += ' selected';
+            
+            div.className = `grid-item ${statusClass}`;
+            div.innerHTML = `<strong>F:${fStr}</strong><br><span style="font-size:0.7rem">${t.num1}, ${t.num2}</span>`;
+            
+            if (t.status === 'available') {
+                div.onclick = () => toggleSelectTicket(fStr);
+            } else {
+                div.title = `Ocupado por: ${t.buyer || 'Reservado'}`;
+            }
             grid.appendChild(div);
         }
     }
 
-    function filterGrid() {
-        let val = document.getElementById('search-input').value;
-        renderGrid(val);
+    function toggleSelectTicket(fStr) {
+        let index = selectedTickets.indexOf(fStr);
+        if (index > -1) {
+            selectedTickets.splice(index, 1);
+        } else {
+            selectedTickets.push(fStr);
+        }
+        renderGrid(document.getElementById('search-input').value);
+        updateSelectedList();
     }
 
+    function updateSelectedList() {
+        let listDiv = document.getElementById('selected-list');
+        if (selectedTickets.length === 0) {
+            listDiv.innerText = "Ningún folio seleccionado";
+        } else {
+            listDiv.innerText = `Folios seleccionados: ${selectedTickets.join(', ')} ($${selectedTickets.length * 50} MXN)`;
+        }
+    }
+
+    function filterGrid() {
+        renderGrid(document.getElementById('search-input').value);
+    }
+
+    function sendWhatsAppOrder() {
+        let name = document.getElementById('buyer-name').value;
+        let phone = document.getElementById('buyer-phone').value;
+        if (selectedTickets.length === 0) {
+            alert('Por favor selecciona al menos un folio.');
+            return;
+        }
+        if (!name || !phone) {
+            alert('Por favor ingresa tu nombre y teléfono.');
+            return;
+        }
+        let msg = `Hola, quiero apartar los folios: ${selectedTickets.join(', ')} para la rifa de la bicimoto. Mi nombre es ${name}. Total a pagar: $${selectedTickets.length * 50} MXN`;
+        window.open(`https://wa.me/5216460000000?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    // Countdown
     const countDownDate = new Date("Nov 30, 2026 23:59:59").getTime();
     setInterval(() => {
         let now = new Date().getTime();
@@ -331,6 +441,7 @@
         document.getElementById("seconds").innerText = Math.floor((distance % (1000 * 60)) / 1000);
     }, 1000);
 
+    // Ruleta 21 tiros
     let currentSpinCount = parseInt(localStorage.getItem('rifa_spin_count')) || 1;
     document.getElementById('spin-counter').innerText = currentSpinCount;
     if (currentSpinCount > 21) {
@@ -377,7 +488,7 @@
                     }
                     let winBox = document.getElementById('winner-box');
                     let winDetails = document.getElementById('winner-details');
-                    winDetails.innerHTML = `Número Sorteado: <span style="color:#d4af37">${finalNum}</span><br>Folio Ganador: <span style="color:#d4af37">${winnerFolio}</span><br>${winnerInfo}`;
+                    winDetails.innerHTML = `Número Sorteado: <span style="color:var(--primary-gold)">${finalNum}</span><br>Folio Ganador: <span style="color:var(--primary-gold)">${winnerFolio}</span><br>${winnerInfo}`;
                     winBox.style.display = 'block';
                     currentSpinCount++;
                     localStorage.setItem('rifa_spin_count', currentSpinCount);
