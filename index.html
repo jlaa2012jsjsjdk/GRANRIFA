@@ -276,7 +276,7 @@
             Boleto: $50 MXN (¡2 Oportunidades del 000 al 999!)
         </div>
         
-        <p>Gana una magnífica bicimoto eléctrica ideal para tus trayectos diarios. Rápida, ecológica y práctica.</p>
+        <p>Gana una magnífica bicimoto eléctrica ideal para tus trayectos diarios. Rápida, ecológica y práctica[cite: 1].</p>
         
         <div class="clause-box">
             <strong>⚠️ Aviso Legal y de Variación:</strong> Las imágenes mostradas en este sitio son puramente ilustrativas. Los accesorios, componentes, diseño de piezas, detalles gráficos y el tono exacto del color pueden variar o cambiar según la disponibilidad del fabricante al momento de la entrega, sin que esto afecte la calidad, el funcionamiento general ni el valor del premio principal ofertado.
@@ -294,13 +294,14 @@
     <!-- Tómbola Oficial -->
     <div class="card tombola-container" id="tombola">
         <h2 style="color: var(--primary-gold);">🎰 Tómbola Oficial en Vivo</h2>
-        <p>Dinámica: Se realizarán 20 tiros de descarte y <strong>el tiro 21 será el ganador oficial</strong>.</p>
+        <p>Dinámica: Se realizarán 20 tiros de descarte y <strong>el tiro 21 será el ganador oficial</strong>[cite: 1].</p>
         
         <div>Tiro actual: <span id="spin-counter" style="font-weight:bold; color: var(--warning-yellow); font-size: 1.3rem;">1</span> de 21</div>
         
         <div class="roulette-display" id="roulette-number">000</div>
         
-        <button class="btn-spin" id="btn-spin-wheel" onclick="spinWheel()">🎲 Girar Tómbola de 1,000 Números</button>
+        <!-- BOTÓN CORREGIDO: Llama a validarPIN antes de girar -->
+        <button class="btn-spin" id="btn-spin-wheel" onclick="validarPINYEsirar()">🎲 Girar Tómbola de 1,000 Números</button>
         
         <div id="spin-message" style="margin-top: 20px; font-weight: bold; font-size: 1.1rem; min-height: 30px;"></div>
 
@@ -334,7 +335,7 @@
     <div class="card" id="reglas">
         <h2 style="color: var(--primary-gold);">⚖️ Bases, Reglas y Cláusula del Sorteo</h2>
         <div style="text-align: left; font-size: 0.9rem; line-height: 1.6; color: #d5d8dc;">
-            <p><strong>1. Dinámica del Sorteo:</strong> Cada boleto consta de un número de folio (0001 al 0500) y dos números asignados de la suerte (000 al 999).</p>
+            <p><strong>1. Dinámica del Sorteo:</strong> Cada boleto consta de un número de folio (0001 al 0500) y dos números asignados de la suerte (000 al 999)[cite: 1].</p>
             <p><strong>2. Prórroga:</strong> Para garantizar la entrega formal del premio, se requiere la venta del 100% de los boletos antes del 30 de Noviembre. De no alcanzarse la meta, la fecha se prorrogará hasta completar la totalidad de la emisión.</p>
             <p><strong>3. Entrega:</strong> El ganador podrá recoger personalmente la bici-moto en Maneadero, Baja California.</p>
         </div>
@@ -592,6 +593,18 @@
             document.getElementById("seconds").innerText = Math.floor((distance % (1000 * 60)) / 1000);
         }
     }, 1000);
+
+    // NUEVA FUNCIÓN: Valida el PIN antes de permitir girar la tómbola
+    function validarPINYEsirar() {
+        let pin = prompt("🔐 Ingrese el PIN de Administrador para autorizar el tiro:");
+        if (pin === null) return; // Si cancela, no hace nada
+        
+        if (pin === "1234") {
+            spinWheel(); // Si el PIN es correcto, ejecuta la tómbola
+        } else {
+            alert("❌ PIN incorrecto. Solo el administrador puede girar la tómbola.");
+        }
+    }
 
     // Tómbola
     let currentSpinCount = 1;
