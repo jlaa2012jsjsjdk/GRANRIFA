@@ -205,6 +205,24 @@
         .btn-admin { background-color: #34495e; color: #fff; }
         input, select { padding: 10px; margin: 8px 0; width: 100%; box-sizing: border-box; background: #05160e; border: 1px solid rgba(212,175,55,0.4); color: #fff; border-radius: 6px; }
 
+        /* Tabla Admin de Compradores */
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 0.85rem;
+            background: #05160e;
+        }
+        .admin-table th, .admin-table td {
+            border: 1px solid rgba(212,175,55,0.3);
+            padding: 10px;
+            text-align: left;
+        }
+        .admin-table th {
+            background-color: #0c2c1e;
+            color: var(--primary-gold);
+        }
+
         .whatsapp-float {
             position: fixed;
             bottom: 25px;
@@ -241,7 +259,7 @@
 
 <div class="container" id="inicio">
     
-    <!-- Tarjeta Principal con Álbum de Fotos (6 Imágenes) -->
+    <!-- Tarjeta Principal -->
     <div class="card">
         <h2 style="color: var(--primary-gold);">Premio Principal</h2>
         
@@ -273,7 +291,7 @@
         </div>
     </div>
 
-    <!-- Tómbola Oficial (21 Tiros) -->
+    <!-- Tómbola Oficial -->
     <div class="card tombola-container" id="tombola">
         <h2 style="color: var(--primary-gold);">🎰 Tómbola Oficial en Vivo</h2>
         <p>Dinámica: Se realizarán 20 tiros de descarte y <strong>el tiro 21 será el ganador oficial</strong>.</p>
@@ -312,7 +330,7 @@
         </div>
     </div>
 
-    <!-- Sección de Reglas y Legal -->
+    <!-- Reglas y Legal -->
     <div class="card" id="reglas">
         <h2 style="color: var(--primary-gold);">⚖️ Bases, Reglas y Cláusula del Sorteo</h2>
         <div style="text-align: left; font-size: 0.9rem; line-height: 1.6; color: #d5d8dc;">
@@ -322,7 +340,7 @@
         </div>
     </div>
 
-    <!-- Panel de Administración -->
+    <!-- Panel de Administración Oculto con Registro Privado -->
     <div class="card" id="admin">
         <button class="btn btn-admin" onclick="toggleAdminPanel()">⚙️ Panel de Administración (PIN)</button>
         
@@ -337,8 +355,8 @@
                 <label>Folio (0001 a 0500):</label>
                 <input type="text" id="adm-folio" placeholder="Ej. 0001">
                 
-                <label>Nombre del Comprador:</label>
-                <input type="text" id="adm-name" placeholder="Nombre completo">
+                <label>Nombre del Comprador y Teléfono:</label>
+                <input type="text" id="adm-name" placeholder="Nombre y Teléfono">
 
                 <label>Estado:</label>
                 <select id="adm-status">
@@ -348,6 +366,24 @@
                 </select>
 
                 <button class="btn" onclick="saveTicketData()">Guardar Cambios</button>
+
+                <hr style="border-color: rgba(212,175,55,0.2); margin-top: 25px;">
+                <h4 style="color: var(--primary-gold);">📋 Registro Privado de Compradores (Solo Admin)</h4>
+                <div style="overflow-x: auto;">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Folio</th>
+                                <th>Números</th>
+                                <th>Estado</th>
+                                <th>Comprador / Contacto</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-buyers-list">
+                            <tr><td colspan="4">Cargando registros...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -358,7 +394,7 @@
     💬 WhatsApp
 </a>
 
-<!-- Carga de SDKs de Firebase Realtime Database -->
+<!-- Firebase SDKs -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
@@ -416,12 +452,10 @@
         if (data) {
             ticketsData = data;
             renderGrid(document.getElementById('search-input') ? document.getElementById('search-input').value : '');
+            renderAdminBuyersList(); // Actualizar registro privado del Admin
         } else {
             initTicketsInFirebase();
         }
-    }, (error) => {
-        console.error("Error al leer Firebase:", error);
-        document.getElementById('tickets-grid').innerHTML = `<div style="grid-column:1/-1; color:red; padding:15px;">Error de conexión con Firebase. Revisa las reglas de la base de datos.</div>`;
     });
 
     function initTicketsInFirebase() {
@@ -432,9 +466,7 @@
             let num2 = String((i + 499) % 1000).padStart(3, '0');
             initialData[fStr] = { num1: num1, num2: num2, status: 'available', buyer: '' };
         }
-        ticketsRef.set(initialData).then(() => {
-            console.log("Folios inicializados correctamente en Firebase.");
-        });
+        ticketsRef.set(initialData);
     }
 
     function renderGrid(filter = '') {
@@ -446,7 +478,7 @@
             let fStr = String(i).padStart(4, '0');
             let t = ticketsData[fStr] || { num1: '---', num2: '---', status: 'available', buyer: '' };
             
-            if (filter && !fStr.includes(filter) && !t.num1.includes(filter) && !t.num2.includes(filter) && !t.buyer.toLowerCase().includes(filter.toLowerCase())) {
+            if (filter && !fStr.includes(filter) && !t.num1.includes(filter) && !t.num2.includes(filter)) {
                 continue;
             }
 
@@ -460,7 +492,7 @@
             if (t.status === 'available') {
                 div.onclick = () => toggleSelectTicket(fStr);
             } else {
-                div.title = `Ocupado por: ${t.buyer || 'Reservado'}`;
+                div.title = `Folio no disponible`; // Oculta el nombre al público general
             }
             grid.appendChild(div);
         }
@@ -503,6 +535,7 @@
             return;
         }
 
+        // Guarda el nombre y teléfono del comprador en Firebase
         selectedTickets.forEach(fStr => {
             ticketsRef.child(fStr).update({
                 status: 'reserved',
@@ -515,6 +548,35 @@
         
         selectedTickets = [];
         updateSelectedList();
+    }
+
+    // Renderiza la lista privada de compradores solo en el Panel de Admin
+    function renderAdminBuyersList() {
+        const tbody = document.getElementById('admin-buyers-list');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+        
+        let count = 0;
+        for (let i = 1; i <= 500; i++) {
+            let fStr = String(i).padStart(4, '0');
+            let t = ticketsData[fStr];
+            if (t && (t.status === 'reserved' || t.status === 'sold' || t.buyer)) {
+                count++;
+                let tr = document.createElement('tr');
+                let statusBadge = t.status === 'sold' ? '🟢 Vendido' : '🟡 Apartado';
+                tr.innerHTML = `
+                    <td><strong>${fStr}</strong></td>
+                    <td>${t.num1}, ${t.num2}</td>
+                    <td>${statusBadge}</td>
+                    <td>${t.buyer || 'Sin nombre'}</td>
+                `;
+                tbody.appendChild(tr);
+            }
+        }
+
+        if (count === 0) {
+            tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#aaa;">No hay boletos apartados ni vendidos aún.</td></tr>`;
+        }
     }
 
     // Cuenta regresiva
@@ -588,6 +650,7 @@
         let pin = document.getElementById('admin-pin').value;
         if (pin === '1234') {
             document.getElementById('admin-controls').style.display = 'block';
+            renderAdminBuyersList();
             alert('¡Acceso concedido!');
         } else {
             alert('PIN incorrecto (Prueba con 1234)');
