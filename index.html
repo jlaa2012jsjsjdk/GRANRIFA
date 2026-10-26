@@ -201,7 +201,7 @@
         <div class="price-tag">Boleto: $50 MXN (¡2 Oportunidades!)</div>
         <p>Gana una magnífica bicimoto eléctrica ideal para tus trayectos diarios. Rápida, ecológica y práctica.</p>
         
-        <!-- Cláusula legal solicitada -->
+        <!-- Cláusula legal -->
         <div class="clause-box">
             <strong>Aviso Legal y de Variación:</strong> Las imágenes mostradas en este sitio son puramente ilustrativas. Los accesorios, componentes, diseño de piezas, detalles gráficos y el tono exacto del color pueden variar o cambiar según la disponibilidad del fabricante al momento de la entrega, sin que esto afecte la calidad, el funcionamiento general ni el valor del premio principal ofertado.
         </div>
@@ -217,7 +217,7 @@
         <a href="https://wa.me/5216460000000?text=Hola,%20quiero%20apartar%20boletos%20para%20la%20rifa%20de%20la%20bicimoto" target="_blank" class="btn">💬 Apartar por WhatsApp</a>
     </div>
 
-    <!-- Tómbola / Ruleta en Vivo (20 tiros de descarte, 21 ganador) -->
+    <!-- Tómbola / Ruleta en Vivo -->
     <div class="card tombola-container">
         <h2>🎰 Tómbola Oficial en Vivo</h2>
         <p>Dinámica: Se realizarán 20 tiros de descarte y <strong>el tiro 21 será el ganador oficial</strong>.</p>
@@ -230,14 +230,13 @@
         
         <div id="spin-message" style="margin-top: 15px; font-weight: bold; font-size: 1.1rem; min-height: 30px;"></div>
 
-        <!-- Anuncio del Ganador Final (Solo aparece en el tiro 21) -->
         <div id="winner-box" class="winner-announcement">
             <h2>🎉 ¡TENEMOS GANADOR OFICIAL! 🎉</h2>
             <p id="winner-details" style="font-size: 1.1rem; font-weight: bold;"></p>
         </div>
     </div>
 
-    <!-- Panel de Consulta y Estado de Boletos -->
+    <!-- Matriz de 500 Folios -->
     <div class="card">
         <h3 class="section-title">📊 Matriz de 500 Folios (500 Boletos / 1,000 Números)</h3>
         <p style="font-size: 0.85rem; text-align: left;">Cada boleto cuenta con 2 números asignados del 000 al 999.</p>
@@ -246,9 +245,7 @@
             <input type="text" id="search-input" placeholder="Buscar por Folio (ej. 0001) o Número..." onkeyup="filterGrid()">
         </div>
 
-        <div class="grid-container" id="tickets-grid">
-            <!-- Generado por JavaScript -->
-        </div>
+        <div class="grid-container" id="tickets-grid"></div>
     </div>
 
     <!-- Panel de Administración -->
@@ -258,3 +255,169 @@
         <div id="admin-panel" style="display: none; margin-top: 15px; text-align: left; border-top: 1px solid #ddd; padding-top: 15px;">
             <h4>Acceso Administrador</h4>
             <input type="password" id="admin-pin" placeholder="Ingresa PIN (1234)">
+            <button class="btn" onclick="loginAdmin()">Entrar</button>
+            
+            <div id="admin-controls" style="display: none; margin-top: 15px;">
+                <hr>
+                <h5>Modificar Estado de Folio</h5>
+                <label>Folio (0001 a 0500):</label>
+                <input type="text" id="adm-folio" placeholder="Ej. 0001">
+                
+                <label>Nombre del Comprador:</label>
+                <input type="text" id="adm-name" placeholder="Nombre completo">
+
+                <label>Estado:</label>
+                <select id="adm-status">
+                    <option value="available">Disponible</option>
+                    <option value="reserved">Apartado</option>
+                    <option value="sold">Pagado</option>
+                </select>
+
+                <button class="btn" onclick="saveTicketData()">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    let ticketsData = JSON.parse(localStorage.getItem('rifa_tickets')) || {};
+
+    function initTickets() {
+        if (Object.keys(ticketsData).length === 0) {
+            for (let i = 1; i <= 500; i++) {
+                let fStr = String(i).padStart(4, '0');
+                let num1 = String((i - 1) % 1000).padStart(3, '0');
+                let num2 = String((i + 499) % 1000).padStart(3, '0');
+                ticketsData[fStr] = { num1: num1, num2: num2, status: 'available', buyer: '' };
+            }
+            localStorage.setItem('rifa_tickets', JSON.stringify(ticketsData));
+        }
+    }
+
+    function renderGrid(filter = '') {
+        const grid = document.getElementById('tickets-grid');
+        grid.innerHTML = '';
+        
+        for (let i = 1; i <= 500; i++) {
+            let fStr = String(i).padStart(4, '0');
+            let t = ticketsData[fStr];
+            
+            if (filter && !fStr.includes(filter) && !t.num1.includes(filter) && !t.num2.includes(filter) && !t.buyer.toLowerCase().includes(filter.toLowerCase())) {
+                continue;
+            }
+
+            let div = document.createElement('div');
+            div.className = `grid-item ${t.status}`;
+            div.innerHTML = `<strong>F:${fStr}</strong><br><span style="font-size:0.75rem">${t.num1}, ${t.num2}</span>`;
+            div.title = `Folio: ${fStr}\nNúmeros: ${t.num1} y ${t.num2}\nEstado: ${t.status}\nComprador: ${t.buyer || 'N/A'}`;
+            grid.appendChild(div);
+        }
+    }
+
+    function filterGrid() {
+        let val = document.getElementById('search-input').value;
+        renderGrid(val);
+    }
+
+    const countDownDate = new Date("Nov 30, 2026 23:59:59").getTime();
+    setInterval(() => {
+        let now = new Date().getTime();
+        let distance = countDownDate - now;
+        document.getElementById("days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24));
+        document.getElementById("hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        document.getElementById("minutes").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        document.getElementById("seconds").innerText = Math.floor((distance % (1000 * 60)) / 1000);
+    }, 1000);
+
+    let currentSpinCount = parseInt(localStorage.getItem('rifa_spin_count')) || 1;
+    document.getElementById('spin-counter').innerText = currentSpinCount;
+    if (currentSpinCount > 21) {
+        document.getElementById('btn-spin-wheel').disabled = true;
+        document.getElementById('spin-message').innerText = "¡El sorteo ha finalizado!";
+    }
+
+    function spinWheel() {
+        if (currentSpinCount > 21) return;
+        let btn = document.getElementById('btn-spin-wheel');
+        let display = document.getElementById('roulette-number');
+        let msg = document.getElementById('spin-message');
+        btn.disabled = true;
+        msg.innerText = "Girando tómbola...";
+
+        let counter = 0;
+        let interval = setInterval(() => {
+            let randomNum = Math.floor(Math.random() * 1000);
+            display.innerText = String(randomNum).padStart(3, '0');
+            counter++;
+            
+            if (counter > 25) {
+                clearInterval(interval);
+                let finalNum = String(Math.floor(Math.random() * 1000)).padStart(3, '0');
+                display.innerText = finalNum;
+
+                if (currentSpinCount < 21) {
+                    msg.innerHTML = `❌ Tiro #${currentSpinCount}: El número <strong>${finalNum}</strong> queda descartado.`;
+                    currentSpinCount++;
+                    localStorage.setItem('rifa_spin_count', currentSpinCount);
+                    document.getElementById('spin-counter').innerText = currentSpinCount;
+                    btn.disabled = false;
+                } else {
+                    msg.innerHTML = `🏆 ¡EL TIRO 21 HA DEFINIDO AL GANADOR!`;
+                    btn.disabled = true;
+                    let winnerFolio = "No asignado";
+                    let winnerInfo = "Sin registro de comprador";
+                    for (let f in ticketsData) {
+                        if (ticketsData[f].num1 === finalNum || ticketsData[f].num2 === finalNum) {
+                            winnerFolio = f;
+                            winnerInfo = ticketsData[f].buyer ? `Comprador: ${ticketsData[f].buyer}` : `Folio ${f} (Sin nombre registrado)`;
+                            break;
+                        }
+                    }
+                    let winBox = document.getElementById('winner-box');
+                    let winDetails = document.getElementById('winner-details');
+                    winDetails.innerHTML = `Número Sorteado: <span style="color:#d4af37">${finalNum}</span><br>Folio Ganador: <span style="color:#d4af37">${winnerFolio}</span><br>${winnerInfo}`;
+                    winBox.style.display = 'block';
+                    currentSpinCount++;
+                    localStorage.setItem('rifa_spin_count', currentSpinCount);
+                }
+            }
+        }, 80);
+    }
+
+    function toggleAdminPanel() {
+        let p = document.getElementById('admin-panel');
+        p.style.display = p.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function loginAdmin() {
+        let pin = document.getElementById('admin-pin').value;
+        if (pin === '1234') {
+            document.getElementById('admin-controls').style.display = 'block';
+            alert('¡Acceso concedido!');
+        } else {
+            alert('PIN incorrecto (Prueba con 1234)');
+        }
+    }
+
+    function saveTicketData() {
+        let f = document.getElementById('adm-folio').value.padStart(4, '0');
+        let name = document.getElementById('adm-name').value;
+        let status = document.getElementById('adm-status').value;
+        if (ticketsData[f]) {
+            ticketsData[f].buyer = name;
+            ticketsData[f].status = status;
+            localStorage.setItem('rifa_tickets', JSON.stringify(ticketsData));
+            renderGrid();
+            alert(`Folio ${f} actualizado correctamente.`);
+        } else {
+            alert('Folio no válido (0001 a 0500)');
+        }
+    }
+
+    initTickets();
+    renderGrid();
+</script>
+
+</body>
+</html>
