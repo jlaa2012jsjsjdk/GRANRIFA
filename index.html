@@ -398,7 +398,8 @@
 
         card.innerHTML = `
           <div class="flex justify-between items-center mb-1">
-            <span class="text-xs font-black text-slate-300">FOLIO #${fStr}</span>${statusBadge}
+            <span class="text-xs font-black text-slate-300">FOLIO #${fStr}</span>
+            ${statusBadge}
           </div>
           <div class="my-2 py-1.5 px-2 bg-slate-950/60 rounded-lg border border-slate-800 flex justify-around items-center">
             <div class="text-center"><span class="text-[9px] uppercase text-slate-400 block">Núm 1</span><span class="text-sm font-black text-amber-300">${t.num1}</span></div>
@@ -442,4 +443,193 @@
 
       let msg = `*¡HOLA! QUIERO APARTAR MI BOLETO PARA LA RIFA DE LA BICIMOTO KIWO*\n\n`;
       msg += `📌 *Folio:* #${selectedFolioStr}\n`;
-      msg += `🎟️ *Mis Números de la Suerte:* ${t.num1}
+      msg += `🎟️ *Mis Números de la Suerte:* ${t.num1} y ${t.num2}\n`;
+      msg += `👤 *Nombre:* ${name}\n`;
+      msg += `📱 *Teléfono:* ${phone}\n`;
+      if (refCode) msg += `🎁 *Referido por:* ${refCode}\n`;
+      msg += `💰 *Total a Pagar:* $50 MXN\n\n`;
+      msg += `*Por favor compárteme la cuenta / CLABE bancaria para realizar mi depósito o transferencia.*`;
+
+      closeFolioModal();
+      window.open(`https://wa.me/5216461978574?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    // PROGRESO DE REFERIDOS Y RECLAMO DE PREMIO
+    function updateReferralProgress() {
+      const name = document.getElementById('ref-user-name').value.trim();
+      if (!name) {
+        document.getElementById('claim-reward-box').classList.add('hidden');
+        return;
+      }
+
+      let count = 0;
+      let listHtml = '';
+
+      for (let f in ticketsData) {
+        if (ticketsData[f].refCode && ticketsData[f].refCode.toLowerCase() === name.toLowerCase()) {
+          count++;
+          listHtml += `<li class="p-2 bg-slate-800/80 rounded border border-slate-700 text-emerald-400 flex justify-between">
+            <span>Amigo: ${ticketsData[f].buyer || 'Comprador'}</span>
+            <span>Folio #${f}</span>
+          </li>`;
+        }
+      }
+
+      document.getElementById('ref-count-text').innerText = `${count} / 3 Amigos`;
+      let percentage = Math.min((count / 3) * 100, 100);
+      document.getElementById('ref-progress-bar').style.width = `${percentage}%`;
+
+      if (listHtml !== '') {
+        document.getElementById('ref-friends-list').innerHTML = listHtml;
+      }
+
+      // Si llega a 3 o más referidos, mostrar caja para reclamar premio
+      const claimBox = document.getElementById('claim-reward-box');
+      if (count >= 3) {
+        claimBox.classList.remove('hidden');
+      } else {
+        claimBox.classList.add('hidden');
+      }
+    }
+
+    function populateRewardSelect() {
+      const select = document.getElementById('reward-folio-select');
+      select.innerHTML = '<option value="">-- Elige un Folio Disponible --</option>';
+      for (let f in ticketsData) {
+        if (ticketsData[f].status === 'available') {
+          let opt = document.createElement('option');
+          opt.value = f;
+          opt.innerText = `Folio #${f} (Núms: ${ticketsData[f].num1}, ${ticketsData[f].num2})`;
+          select.appendChild(opt);
+        }
+      }
+    }
+
+    function claimRewardWhatsApp() {
+      const name = document.getElementById('ref-user-name').value.trim();
+      const phone = document.getElementById('ref-user-phone').value.trim();
+      const folioId = document.getElementById('reward-folio-select').value;
+
+      if (!name || !phone) {
+        alert("Por favor ingresa tu nombre y teléfono en la sección de referidos.");
+        return;
+      }
+      if (!folioId) {
+        alert("Por favor selecciona un folio de regalo.");
+        return;
+      }
+
+      let t = ticketsData[folioId];
+      let msg = `*🎁 ¡RECLAMO DE PREMIO PROMO 3x1! 🎁*\n\n`;
+      msg += `👤 *Anfitrión / Referidor:* ${name}\n`;
+      msg += `📱 *Teléfono:* ${phone}\n`;
+      msg += `✅ *Estatus:* He completado mis 3 referidos confirmados.\n`;
+      msg += `🎁 *Folio de Regalo Solicitado:* #${folioId} (Números: ${t.num1} y ${t.num2})\n\n`;
+      msg += `*Por favor valida mis referidos para asignarme este folio de regalo.*`;
+
+      window.open(`https://wa.me/5216461978574?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    function updateReferralLink() {
+      const name = document.getElementById('ref-user-name').value.trim();
+      const output = document.getElementById('ref-link-output');
+      if (!name) { output.value = "Ingresa tu nombre y teléfono arriba..."; return; }
+      const baseUrl = window.location.href.split('?')[0];
+      output.value = `${baseUrl}?ref=${encodeURIComponent(name)}`;
+      updateReferralProgress();
+    }
+
+    function copyRefLink() {
+      const output = document.getElementById('ref-link-output');
+      if (output.value.startsWith('http')) {
+        navigator.clipboard.writeText(output.value);
+        alert("¡Enlace copiado al portapapeles!");
+      }
+    }
+
+    function shareWhatsApp() {
+      const link = document.getElementById('ref-link-output').value;
+      if (!link.startsWith('http')) return alert("Ingresa tu nombre primero.");
+      const msg = `¡Hola! Apóyame comprando tu boleto de la Rifa Bicimoto KIWO ($50 MXN) usando mi enlace: ${link}`;
+      window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    // PANEL ADMIN Y TÓMBOLA
+    function openAdminModal() { document.getElementById('admin-modal').classList.remove('hidden'); }
+    function closeAdminModal() { document.getElementById('admin-modal').classList.add('hidden'); }
+    function checkAdminPin() {
+      if (document.getElementById('admin-pin-input').value === '1234') {
+        document.getElementById('admin-login-view').classList.add('hidden');
+        document.getElementById('admin-dashboard-view').classList.remove('hidden');
+        renderAdminDashboard();
+      } else alert('PIN incorrecto');
+    }
+
+    function renderAdminDashboard() {
+      const table = document.getElementById('admin-buyers-table');
+      table.innerHTML = '';
+      for (let f in ticketsData) {
+        let t = ticketsData[f];
+        if (t.status !== 'available') {
+          let tr = document.createElement('tr');
+          tr.className = 'border-b border-slate-800';
+          tr.innerHTML = `
+            <td class="p-2 font-bold">#${f}</td>
+            <td class="p-2">${t.num1}, ${t.num2}</td>
+            <td class="p-2">${t.buyer} (${t.phone}) ${t.refCode ? '<br><small class="text-amber-400">Ref de: '+t.refCode+'</small>' : ''}</td>
+            <td class="p-2">${t.status === 'sold' ? '🟢 Vendido' : '🟡 Apartado'}</td>
+            <td class="p-2 text-right"><button onclick="liberarFolio('${f}')" class="px-2 py-1 bg-rose-600 text-white rounded text-[10px]">Liberar</button></td>
+          `;
+          table.appendChild(tr);
+        }
+      }
+    }
+
+    function liberarFolio(fStr) {
+      if (confirm(`¿Liberar folio #${fStr}?`)) {
+        ticketsRef.child(fStr).update({ status: 'available', buyer: '', phone: '', refCode: '' });
+      }
+    }
+
+    function validarPINYEsirar() {
+      let pin = prompt("🔐 PIN de Administrador:");
+      if (pin === "1234") spinWheel();
+      else if(pin !== null) alert("PIN incorrecto.");
+    }
+
+    let currentSpinCount = 1;
+    function spinWheel() {
+      let display = document.getElementById('tombola-display-num');
+      let msg = document.getElementById('winner-box');
+      let counter = 0;
+      let interval = setInterval(() => {
+        display.innerText = String(Math.floor(Math.random() * 1000)).padStart(3, '0');
+        counter++;
+        if (counter > 25) {
+          clearInterval(interval);
+          let finalNum = String(Math.floor(Math.random() * 1000)).padStart(3, '0');
+          display.innerText = finalNum;
+          if (currentSpinCount < 21) {
+            document.getElementById('tombola-status-label').innerText = `Tiro #${currentSpinCount} (Descartado)`;
+            currentSpinCount++;
+          } else {
+            msg.innerHTML = `<h3 class="text-amber-400 font-bold">🎉 ¡NÚMERO GANADOR: ${finalNum}! 🎉</h3>`;
+          }
+        }
+      }, 70);
+    }
+
+    function startCountdown() {
+      const targetDate = new Date('November 30, 2026 23:59:59').getTime();
+      setInterval(() => {
+        const diff = targetDate - new Date().getTime();
+        if (diff < 0) return;
+        document.getElementById('timer-days').innerText = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
+        document.getElementById('timer-hours').innerText = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+        document.getElementById('timer-minutes').innerText = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+        document.getElementById('timer-seconds').innerText = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
