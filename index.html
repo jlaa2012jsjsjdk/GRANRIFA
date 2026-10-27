@@ -85,20 +85,66 @@
 
   <main class="max-w-7xl mx-auto px-4 py-8 space-y-12">
 
-    <!-- HERO -->
+    <!-- HERO CON CARRUSEL DE 6 FOTOS -->
     <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
       <div class="lg:col-span-7 bg-slate-800/60 border border-slate-700/60 rounded-2xl p-4 flex flex-col justify-between shadow-xl">
-        <div class="relative overflow-hidden rounded-xl h-64 sm:h-80 bg-slate-900 group">
-          <div id="carousel-track" class="w-full h-full flex transition-transform duration-500">
+        <div class="relative overflow-hidden rounded-xl h-64 sm:h-80 bg-slate-950 group">
+          <div id="carousel-track" class="w-full h-full flex transition-transform duration-500 ease-in-out">
+            <!-- Foto 1 -->
             <div class="w-full h-full flex-shrink-0 relative">
-              <img src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=1000&q=80" class="w-full h-full object-cover" alt="Bicimoto KIWO Lateral">
+              <img src="bicimotoelectrica.jpg" class="w-full h-full object-cover" alt="Bicimoto KIWO Vista 1">
               <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-950/90 to-transparent p-4">
-                <span class="text-xs uppercase font-bold text-amber-400">Diseño Moderno</span>
-                <h3 class="text-lg font-bold text-white">Bicimoto Eléctrica KIWO 500W</h3>
+                <span class="text-xs uppercase font-bold text-amber-400">Diseño Exclusivo</span>
+                <h3 class="text-lg font-bold text-white">Bicimoto Eléctrica KIWO 500W (Vista 1)</h3>
+              </div>
+            </div>
+            <!-- Foto 2 -->
+            <div class="w-full h-full flex-shrink-0 relative">
+              <img src="bicimotoelectrica2.jpg" class="w-full h-full object-cover" alt="Bicimoto KIWO Vista 2">
+              <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-950/90 to-transparent p-4">
+                <span class="text-xs uppercase font-bold text-amber-400">Potencia y Estilo</span>
+                <h3 class="text-lg font-bold text-white">Bicimoto Eléctrica KIWO 500W (Vista 2)</h3>
+              </div>
+            </div>
+            <!-- Foto 3 -->
+            <div class="w-full h-full flex-shrink-0 relative">
+              <img src="bicimotoelectrica3.jpg" class="w-full h-full object-cover" alt="Bicimoto KIWO Vista 3">
+              <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-950/90 to-transparent p-4">
+                <span class="text-xs uppercase font-bold text-amber-400">Comodidad Total</span>
+                <h3 class="text-lg font-bold text-white">Bicimoto Eléctrica KIWO 500W (Vista 3)</h3>
+              </div>
+            </div>
+            <!-- Foto 4 -->
+            <div class="w-full h-full flex-shrink-0 relative">
+              <img src="bicimotoelectrica4.jpg" class="w-full h-full object-cover" alt="Bicimoto KIWO Vista 4">
+              <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-950/90 to-transparent p-4">
+                <span class="text-xs uppercase font-bold text-amber-400">Detalles de Calidad</span>
+                <h3 class="text-lg font-bold text-white">Bicimoto Eléctrica KIWO 500W (Vista 4)</h3>
+              </div>
+            </div>
+            <!-- Foto 5 -->
+            <div class="w-full h-full flex-shrink-0 relative">
+              <img src="bicimotoelectrica5.jpg" class="w-full h-full object-cover" alt="Bicimoto KIWO Vista 5">
+              <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-950/90 to-transparent p-4">
+                <span class="text-xs uppercase font-bold text-amber-400">Tecnología Moderna</span>
+                <h3 class="text-lg font-bold text-white">Bicimoto Eléctrica KIWO 500W (Vista 5)</h3>
+              </div>
+            </div>
+            <!-- Foto 6 -->
+            <div class="w-full h-full flex-shrink-0 relative">
+              <img src="bicimotoelectrica6.jpg" class="w-full h-full object-cover" alt="Bicimoto KIWO Vista 6">
+              <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-950/90 to-transparent p-4">
+                <span class="text-xs uppercase font-bold text-amber-400">Lista para Rodar</span>
+                <h3 class="text-lg font-bold text-white">Bicimoto Eléctrica KIWO 500W (Vista 6)</h3>
               </div>
             </div>
           </div>
+
+          <!-- Botones de navegación del carrusel -->
+          <button onclick="prevSlide()" class="absolute left-3 top-1/2 -translate-y-1/2 bg-slate-950/70 hover:bg-slate-950 text-white w-9 h-9 rounded-full flex items-center justify-center transition shadow-lg"><i class="fa-solid fa-chevron-left"></i></button>
+          <button onclick="nextSlide()" class="absolute right-3 top-1/2 -translate-y-1/2 bg-slate-950/70 hover:bg-slate-950 text-white w-9 h-9 rounded-full flex items-center justify-center transition shadow-lg"><i class="fa-solid fa-chevron-right"></i></button>
         </div>
+
         <div class="flex justify-between items-center mt-4 px-2">
           <div class="text-sm text-slate-400"><i class="fa-solid fa-ticket text-brand-gold mr-1"></i> Boleto: <b class="text-white">$50 MXN</b> (Incluye 2 números)</div>
           <div class="text-sm font-semibold text-emerald-400 flex items-center gap-1"><i class="fa-solid fa-shield-halved"></i> 100% Transparente</div>
@@ -145,7 +191,7 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-900/60 p-4 rounded-xl border border-slate-700">
             <div>
               <label class="block text-xs uppercase font-bold text-slate-300 mb-1">Tu Nombre:</label>
-              <input type="text" id="ref-user-name" placeholder="Ej. PRUEBA NUMERO 5" oninput="saveUserData()" class="w-full bg-slate-800 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-400">
+              <input type="text" id="ref-user-name" placeholder="Ej. Juan Pérez" oninput="saveUserData()" class="w-full bg-slate-800 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-400">
             </div>
             <div>
               <label class="block text-xs uppercase font-bold text-slate-300 mb-1">Tu Teléfono:</label>
@@ -334,6 +380,28 @@
 
     let ticketsData = {};
     let selectedFolioStr = null;
+
+    // LÓGICA DEL CARRUSEL DE FOTOS
+    let currentSlide = 0;
+    const totalSlides = 6;
+
+    function updateCarousel() {
+      const track = document.getElementById('carousel-track');
+      track.style.transform = `translateX(-${currentSlide * 100}%)`;
+    }
+
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % totalSlides;
+      updateCarousel();
+    }
+
+    function prevSlide() {
+      currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+      updateCarousel();
+    }
+
+    // Auto-rotación del carrusel cada 4 segundos
+    setInterval(nextSlide, 4000);
 
     window.onload = function() {
       const savedName = localStorage.getItem('kiwo_user_name') || '';
