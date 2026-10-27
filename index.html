@@ -54,6 +54,33 @@
   <!-- Google Tag Manager (noscript) -->
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TMH2HZDW" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
+  <!-- MODAL DE ACCESO / IDENTIFICACIÓN OBLIGATORIA -->
+  <div id="auth-modal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-brand-gold/40 rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl relative text-center">
+      <div class="w-16 h-16 rounded-full gold-gradient-bg flex items-center justify-center text-slate-950 font-black text-2xl mx-auto shadow-lg">
+        <i class="fa-solid fa-user-check"></i>
+      </div>
+      <div>
+        <h3 class="text-2xl font-black text-white">¡Bienvenido a la Rifa!</h3>
+        <p class="text-xs text-slate-300 mt-1">Para guardar tus referidos, folios y avance, ingresa tu nombre y número de teléfono.</p>
+      </div>
+      <form id="auth-form" onsubmit="handleUserAuth(event)" class="space-y-3 text-left">
+        <div>
+          <label class="block text-xs font-bold text-slate-300 mb-1">Tu Nombre o Usuario:</label>
+          <input type="text" id="auth-username" required placeholder="Ej. Juan Pérez" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-400">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-300 mb-1">Tu Teléfono / WhatsApp (ID):</label>
+          <input type="tel" id="auth-phone" required placeholder="Ej. 6461234567" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-400">
+          <span class="text-[10px] text-slate-400 mt-1 block">🔒 Usaremos este número para identificarte y guardar tu avance.</span>
+        </div>
+        <button type="submit" class="w-full py-3 rounded-xl font-extrabold gold-gradient-bg text-slate-950 shadow-lg hover:brightness-110 transition mt-2 flex items-center justify-center gap-2">
+          <i class="fa-solid fa-right-to-bracket"></i> ENTRAR / REGISTRARME
+        </button>
+      </form>
+    </div>
+  </div>
+
   <!-- HEADER -->
   <header class="border-b border-brand-gold/30 bg-slate-900/80 backdrop-blur-md sticky top-0 z-40">
     <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-4">
@@ -182,7 +209,7 @@
         <div>
           <span class="px-3 py-1 bg-amber-500/20 text-amber-300 text-xs font-bold rounded-full border border-amber-500/40"><i class="fa-solid fa-gift"></i> Promo 3x1</span>
           <h2 class="text-2xl font-black text-white mt-2">¡Invita a 3 Amigos y Gana 1 Número Gratis!</h2>
-          <p class="text-sm text-slate-300 mt-1">Escribe tu nombre para generar tu enlace automático.</p>
+          <p class="text-sm text-slate-300 mt-1">Comparte tu enlace personalizado para acumular referidos.</p>
         </div>
       </div>
 
@@ -191,18 +218,18 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-900/60 p-4 rounded-xl border border-slate-700">
             <div>
               <label class="block text-xs uppercase font-bold text-slate-300 mb-1">Tu Nombre:</label>
-              <input type="text" id="ref-user-name" placeholder="Ej. Juan Pérez" oninput="saveUserData()" class="w-full bg-slate-800 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-400">
+              <input type="text" id="ref-user-name" readonly class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-amber-300 font-bold">
             </div>
             <div>
-              <label class="block text-xs uppercase font-bold text-slate-300 mb-1">Tu Teléfono:</label>
-              <input type="tel" id="ref-user-phone" placeholder="Ej. 6461234567" oninput="saveUserData()" class="w-full bg-slate-800 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-400">
+              <label class="block text-xs uppercase font-bold text-slate-300 mb-1">Tu Teléfono (ID):</label>
+              <input type="tel" id="ref-user-phone" readonly class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-amber-300 font-bold">
             </div>
           </div>
 
           <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-700 space-y-3">
             <label class="block text-xs uppercase font-bold text-slate-300">Tu Enlace Personalizado:</label>
             <div class="flex items-center gap-2">
-              <input type="text" id="ref-link-output" readonly value="Escribe tu nombre arriba..." class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-amber-300 font-mono">
+              <input type="text" id="ref-link-output" readonly value="Cargando enlace..." class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-amber-300 font-mono">
               <button onclick="copyRefLink()" class="px-3 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg text-xs font-bold transition flex items-center gap-1"><i class="fa-solid fa-copy"></i> Copiar</button>
             </div>
             <button onclick="shareWhatsApp()" class="w-full py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold transition flex items-center justify-center gap-2">
@@ -311,11 +338,11 @@
       <form id="folio-buy-form" onsubmit="handleBuyFolio(event)" class="space-y-3">
         <div>
           <label class="block text-xs font-bold text-slate-300 mb-1">Nombre Completo:</label>
-          <input type="text" id="buyer-name" required placeholder="Ej. Juan Pérez" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-400">
+          <input type="text" id="buyer-name" required readonly class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-amber-300 font-bold">
         </div>
         <div>
           <label class="block text-xs font-bold text-slate-300 mb-1">Teléfono / WhatsApp:</label>
-          <input type="tel" id="buyer-phone" required placeholder="Ej. 646 123 4567" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-400">
+          <input type="tel" id="buyer-phone" required readonly class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-amber-300 font-bold">
         </div>
 
         <!-- CAMPO DE REFERIDO AUTOMÁTICO -->
@@ -351,6 +378,7 @@
                 <th class="p-2">Folio</th>
                 <th class="p-2">Números</th>
                 <th class="p-2">Cliente</th>
+                <th class="p-2">Teléfono</th>
                 <th class="p-2">Estado</th>
                 <th class="p-2 text-right">Acción</th>
               </tr>
@@ -380,6 +408,7 @@
 
     let ticketsData = {};
     let selectedFolioStr = null;
+    let currentAuthUser = { name: '', phone: '' };
 
     // LÓGICA DEL CARRUSEL DE FOTOS
     let currentSlide = 0;
@@ -387,7 +416,7 @@
 
     function updateCarousel() {
       const track = document.getElementById('carousel-track');
-      track.style.transform = `translateX(-${currentSlide * 100}%)`;
+      if (track) track.style.transform = `translateX(-${currentSlide * 100}%)`;
     }
 
     function nextSlide() {
@@ -400,18 +429,23 @@
       updateCarousel();
     }
 
-    // Auto-rotación del carrusel cada 4 segundos
     setInterval(nextSlide, 4000);
 
     window.onload = function() {
-      const savedName = localStorage.getItem('kiwo_user_name') || '';
-      const savedPhone = localStorage.getItem('kiwo_user_phone') || '';
-      if(savedName) document.getElementById('ref-user-name').value = savedName;
-      if(savedPhone) document.getElementById('ref-user-phone').value = savedPhone;
+      // 1. Revisar si el usuario ya inició sesión previamente
+      const savedName = localStorage.getItem('kiwo_user_name');
+      const savedPhone = localStorage.getItem('kiwo_user_phone');
 
-      updateReferralLink();
+      if (savedName && savedPhone) {
+        currentAuthUser.name = savedName;
+        currentAuthUser.phone = savedPhone;
+        applyUserSession();
+        document.getElementById('auth-modal').classList.add('hidden');
+      } else {
+        document.getElementById('auth-modal').classList.remove('hidden');
+      }
 
-      // Detectar parámetro ?ref= sin importar si está antes o después del hash (#)
+      // 2. Detectar parámetro ?ref= en URL o Hash
       let refParam = new URLSearchParams(window.location.search).get('ref');
       if (!refParam && window.location.hash.includes('?')) {
         const hashQuery = window.location.hash.split('?')[1];
@@ -424,6 +458,38 @@
 
       startCountdown();
     };
+
+    // Autenticación inicial del usuario
+    function handleUserAuth(e) {
+      e.preventDefault();
+      const name = document.getElementById('auth-username').value.trim();
+      const phone = document.getElementById('auth-phone').value.trim();
+
+      if (!name || !phone) return;
+
+      localStorage.setItem('kiwo_user_name', name);
+      localStorage.setItem('kiwo_user_phone', phone);
+
+      currentAuthUser.name = name;
+      currentAuthUser.phone = phone;
+
+      applyUserSession();
+      document.getElementById('auth-modal').classList.add('hidden');
+    }
+
+    function applyUserSession() {
+      document.getElementById('ref-user-name').value = currentAuthUser.name;
+      document.getElementById('ref-user-phone').value = currentAuthUser.phone;
+
+      const buyerNameInput = document.getElementById('buyer-name');
+      const buyerPhoneInput = document.getElementById('buyer-phone');
+
+      if (buyerNameInput) buyerNameInput.value = currentAuthUser.name;
+      if (buyerPhoneInput) buyerPhoneInput.value = currentAuthUser.phone;
+
+      updateReferralLink();
+      updateReferralProgress();
+    }
 
     // Sincronización en tiempo real con Firebase
     ticketsRef.on('value', (snapshot) => {
@@ -521,8 +587,8 @@
 
     function handleBuyFolio(e) {
       e.preventDefault();
-      const name = document.getElementById('buyer-name').value.trim();
-      const phone = document.getElementById('buyer-phone').value.trim();
+      const name = currentAuthUser.name;
+      const phone = currentAuthUser.phone;
       const refCode = document.getElementById('buyer-ref-code').value.trim();
       const t = ticketsData[selectedFolioStr];
 
@@ -546,197 +612,178 @@
       window.open(`https://wa.me/5216461978574?text=${encodeURIComponent(msg)}`, '_blank');
     }
 
+    function updateReferralLink() {
+      const name = currentAuthUser.name;
+      if (!name) return;
+      const baseUrl = window.location.origin + window.location.pathname;
+      const refLink = `${baseUrl}?ref=${encodeURIComponent(name)}`;
+      document.getElementById('ref-link-output').value = refLink;
+    }
+
+    function copyRefLink() {
+      const copyText = document.getElementById('ref-link-output');
+      copyText.select();
+      navigator.clipboard.writeText(copyText.value);
+      alert('¡Enlace de referido copiado al portapapeles!');
+    }
+
+    function shareWhatsApp() {
+      const refLink = document.getElementById('ref-link-output').value;
+      const msg = `¡Hola! Participa en la rifa de la Bicimoto Eléctrica KIWO 500W con mi enlace de referido y apóyame:\n\n${refLink}`;
+      window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
     function updateReferralProgress() {
-      const currentName = (document.getElementById('ref-user-name').value || '').trim().toLowerCase();
-      if (!currentName) {
-        document.getElementById('ref-count-text').innerText = `0 / 3 Amigos`;
-        document.getElementById('ref-progress-bar').style.width = `0%`;
-        document.getElementById('ref-friends-list').innerHTML = `<li class="p-2 bg-slate-800/80 rounded border border-slate-700/50 text-slate-400 flex justify-between"><span>Escribe tu nombre arriba...</span></li>`;
-        document.getElementById('claim-reward-box').classList.add('hidden');
-        return;
-      }
+      const currentName = currentAuthUser.name.trim().toLowerCase();
+      const currentPhone = currentAuthUser.phone.trim();
+      if (!currentName) return;
 
       let count = 0;
       let listHtml = '';
 
       for (let f in ticketsData) {
         let t = ticketsData[f];
-        if (t.refCode && t.refCode.trim().toLowerCase() === currentName) {
-          count++;
-          listHtml += `<li class="p-2 bg-slate-800/80 rounded border border-slate-700 text-emerald-400 flex justify-between">
-            <span>Amigo: ${t.buyer || 'Comprador'}</span>
-            <span>Folio #${f}</span>
-          </li>`;
+        // Cuenta si el refCode coincide con el nombre o teléfono del usuario actual
+        if (t.refCode && (t.refCode.trim().toLowerCase() === currentName || t.refCode.trim() === currentPhone)) {
+          if (t.status === 'reserved' || t.status === 'sold') {
+            count++;
+            listHtml += `<li class="p-2 bg-slate-800/80 rounded border border-emerald-500/40 text-emerald-300 flex justify-between"><span>👤 ${t.buyer}</span><b class="text-white">Folio #${f}</b></li>`;
+          }
         }
+      }
+
+      if (count === 0) {
+        listHtml = `<li class="p-2 bg-slate-800/80 rounded border border-slate-700/50 text-slate-400 flex justify-between"><span>Aún no hay amigos con compras confirmadas...</span></li>`;
       }
 
       document.getElementById('ref-count-text').innerText = `${count} / 3 Amigos`;
       let percentage = Math.min((count / 3) * 100, 100);
       document.getElementById('ref-progress-bar').style.width = `${percentage}%`;
+      document.getElementById('ref-friends-list').innerHTML = listHtml;
 
-      if (listHtml !== '') {
-        document.getElementById('ref-friends-list').innerHTML = listHtml;
-      } else {
-        document.getElementById('ref-friends-list').innerHTML = `<li class="p-2 bg-slate-800/80 rounded border border-slate-700/50 text-slate-400 flex justify-between"><span>Esperando compras con tu enlace...</span></li>`;
-      }
-
-      const claimBox = document.getElementById('claim-reward-box');
       if (count >= 3) {
-        claimBox.classList.remove('hidden');
+        document.getElementById('claim-reward-box').classList.remove('hidden');
       } else {
-        claimBox.classList.add('hidden');
+        document.getElementById('claim-reward-box').classList.add('hidden');
       }
     }
 
     function populateRewardSelect() {
       const select = document.getElementById('reward-folio-select');
-      select.innerHTML = '<option value="">-- Elige un Folio Disponible --</option>';
+      select.innerHTML = `<option value="">-- Elige un Folio Disponible --</option>`;
       for (let f in ticketsData) {
-        if (ticketsData[f].status === 'available') {
+        let t = ticketsData[f];
+        if (t.status === 'available') {
           let opt = document.createElement('option');
           opt.value = f;
-          opt.innerText = `Folio #${f} (Núms: ${ticketsData[f].num1}, ${ticketsData[f].num2})`;
+          opt.innerText = `Folio #${f} (${t.num1} y ${t.num2})`;
           select.appendChild(opt);
         }
       }
     }
 
     function claimRewardWhatsApp() {
-      const name = document.getElementById('ref-user-name').value.trim();
-      const phone = document.getElementById('ref-user-phone').value.trim();
-      const folioId = document.getElementById('reward-folio-select').value;
-
-      if (!name || !phone) {
-        alert("Por favor ingresa tu nombre y teléfono en la sección de referidos.");
+      const folioRegalo = document.getElementById('reward-folio-select').value;
+      if (!folioRegalo) {
+        alert('Por favor selecciona un folio disponible para tu regalo.');
         return;
       }
-      if (!folioId) {
-        alert("Por favor selecciona un folio de regalo.");
-        return;
-      }
-
-      let t = ticketsData[folioId];
-      let msg = `*🎁 ¡RECLAMO DE PREMIO PROMO 3x1! 🎁*\n\n`;
-      msg += `👤 *Anfitrión:* ${name}\n`;
-      msg += `📱 *Teléfono:* ${phone}\n`;
-      msg += `✅ *Estatus:* He completado mis 3 referidos confirmados.\n`;
-      msg += `🎁 *Folio de Regalo Solicitado:* #${folioId} (Números: ${t.num1} y ${t.num2})\n\n`;
-      msg += `*Por favor valida mis referidos para asignarme este folio de regalo.*`;
-
+      let msg = `🎉 *¡HOLA! YA CUMPLÍ CON MIS 3 REFERIDOS*\n\n`;
+      msg += `👤 *Mi Nombre:* ${currentAuthUser.name}\n`;
+      msg += `📱 *Mi Teléfono:* ${currentAuthUser.phone}\n`;
+      msg += `🎁 *Folio de Regalo Seleccionado:* #${folioRegalo}\n\n`;
+      msg += `*Quiero reclamar mi número gratis de la promo 3x1.*`;
       window.open(`https://wa.me/5216461978574?text=${encodeURIComponent(msg)}`, '_blank');
     }
 
-    function saveUserData() {
-      const name = document.getElementById('ref-user-name').value.trim();
-      const phone = document.getElementById('ref-user-phone').value.trim();
-      localStorage.setItem('kiwo_user_name', name);
-      localStorage.setItem('kiwo_user_phone', phone);
-      updateReferralLink();
-    }
-
-    function updateReferralLink() {
-      const name = document.getElementById('ref-user-name').value.trim();
-      const output = document.getElementById('ref-link-output');
-      if (!name) {
-        output.value = "Escribe tu nombre arriba...";
-        return;
-      }
-      const baseUrl = window.location.href.split('#')[0].split('?')[0];
-      output.value = `${baseUrl}?ref=${encodeURIComponent(name)}`;
-      updateReferralProgress();
-    }
-
-    function copyRefLink() {
-      const output = document.getElementById('ref-link-output');
-      if (output.value.startsWith('http')) {
-        navigator.clipboard.writeText(output.value);
-        alert("¡Enlace copiado al portapapeles!");
-      }
-    }
-
-    function shareWhatsApp() {
-      const link = document.getElementById('ref-link-output').value;
-      if (!link.startsWith('http')) {
-        alert("Escribe tu nombre primero.");
-        return;
-      }
-      const msg = `¡Hola! Apóyame comprando tu boleto de la Rifa Bicimoto KIWO ($50 MXN) usando mi enlace: ${link}`;
-      window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`, '_blank');
-    }
-
+    // Funciones del Panel Admin
     function openAdminModal() { document.getElementById('admin-modal').classList.remove('hidden'); }
     function closeAdminModal() { document.getElementById('admin-modal').classList.add('hidden'); }
+
     function checkAdminPin() {
-      if (document.getElementById('admin-pin-input').value === '1234') {
+      const pin = document.getElementById('admin-pin-input').value;
+      if (pin === '1234') {
         document.getElementById('admin-login-view').classList.add('hidden');
         document.getElementById('admin-dashboard-view').classList.remove('hidden');
-        renderAdminDashboard();
-      } else alert('PIN incorrecto');
+      } else {
+        alert('PIN Incorrecto');
+      }
     }
 
     function renderAdminDashboard() {
-      const table = document.getElementById('admin-buyers-table');
-      table.innerHTML = '';
+      const tbody = document.getElementById('admin-buyers-table');
+      tbody.innerHTML = '';
       for (let f in ticketsData) {
         let t = ticketsData[f];
         if (t.status !== 'available') {
           let tr = document.createElement('tr');
-          tr.className = 'border-b border-slate-800';
+          tr.className = "border-b border-slate-800";
           tr.innerHTML = `
-            <td class="p-2 font-bold">#${f}</td>
+            <td class="p-2 font-bold text-amber-400">#${f}</td>
             <td class="p-2">${t.num1}, ${t.num2}</td>
-            <td class="p-2">${t.buyer} (${t.phone}) ${t.refCode ? '<br><small class="text-amber-400">Ref: '+t.refCode+'</small>' : ''}</td>
-            <td class="p-2">${t.status === 'sold' ? '🟢 Vendido' : '🟡 Apartado'}</td>
-            <td class="p-2 text-right"><button onclick="liberarFolio('${f}')" class="px-2 py-1 bg-rose-600 text-white rounded text-[10px]">Liberar</button></td>
+            <td class="p-2">${t.buyer || 'N/D'}</td>
+            <td class="p-2">${t.phone || 'N/D'}</td>
+            <td class="p-2"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${t.status === 'sold' ? 'bg-rose-500/20 text-rose-300' : 'bg-amber-500/20 text-amber-300'}">${t.status}</span></td>
+            <td class="p-2 text-right space-x-1">
+              <button onclick="changeStatus('${f}', 'sold')" class="px-2 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded text-[10px]">Vender</button>
+              <button onclick="changeStatus('${f}', 'available')" class="px-2 py-1 bg-slate-700 hover:bg-slate-600 text-white rounded text-[10px]">Liberar</button>
+            </td>
           `;
-          table.appendChild(tr);
+          tbody.appendChild(tr);
         }
       }
     }
 
-    function liberarFolio(fStr) {
-      if (confirm(`¿Liberar folio #${fStr}?`)) {
-        ticketsRef.child(fStr).update({ status: 'available', buyer: '', phone: '', refCode: '' });
-      }
+    function changeStatus(fStr, newStatus) {
+      ticketsRef.child(fStr).update({ status: newStatus });
     }
 
+    // Tómbola / Sorteo
     function validarPINYEsirar() {
-      let pin = prompt("🔐 PIN de Administrador:");
-      if (pin === "1234") spinWheel();
-      else if(pin !== null) alert("PIN incorrecto.");
+      let pin = prompt("Ingresa el PIN de Admin para girar la tómbola:");
+      if (pin === "1234") {
+        girarTombola();
+      } else if (pin !== null) {
+        alert("PIN incorrecto.");
+      }
     }
 
-    let currentSpinCount = 1;
-    function spinWheel() {
-      let display = document.getElementById('tombola-display-num');
-      let msg = document.getElementById('winner-box');
-      let counter = 0;
-      let interval = setInterval(() => {
-        display.innerText = String(Math.floor(Math.random() * 1000)).padStart(3, '0');
-        counter++;
-        if (counter > 25) {
-          clearInterval(interval);
-          let finalNum = String(Math.floor(Math.random() * 1000)).padStart(3, '0');
-          display.innerText = finalNum;
-          if (currentSpinCount < 21) {
-            document.getElementById('tombola-status-label').innerText = `Tiro #${currentSpinCount} (Descartado)`;
-            currentSpinCount++;
-          } else {
-            msg.innerHTML = `<h3 class="text-amber-400 font-bold">🎉 ¡NÚMERO GANADOR: ${finalNum}! 🎉</h3>`;
-          }
-        }
-      }, 70);
+    function girarTombola() {
+      let randomNum = Math.floor(Math.random() * 1000);
+      let formattedNum = String(randomNum).padStart(3, '0');
+      document.getElementById('tombola-display-num').innerText = formattedNum;
+      document.getElementById('winner-box').innerHTML = `<span class="text-emerald-400 font-bold text-base">🎉 ¡Número girado con éxito: ${formattedNum}!</span>`;
     }
 
+    // Temporizador de cuenta regresiva
     function startCountdown() {
-      const targetDate = new Date('November 30, 2026 23:59:59').getTime();
+      // Fecha límite simulada (puedes ajustarla)
+      const countDate = new Date("May 30, 2026 20:00:00").getTime();
       setInterval(() => {
-        const diff = targetDate - new Date().getTime();
-        if (diff < 0) return;
-        document.getElementById('timer-days').innerText = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
-        document.getElementById('timer-hours').innerText = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
-        document.getElementById('timer-minutes').innerText = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
-        document.getElementById('timer-seconds').innerText = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
+        const now = new Date().getTime();
+        const gap = countDate - now;
+
+        if (gap < 0) return;
+
+        const second = 1000;
+        const minute = second * 60;
+        const hour = minute * 60;
+        const day = hour * 24;
+
+        const d = Math.floor(gap / day);
+        const h = Math.floor((gap % day) / hour);
+        const m = Math.floor((gap % hour) / minute);
+        const s = Math.floor((gap % minute) / second);
+
+        const dEl = document.getElementById('timer-days');
+        const hEl = document.getElementById('timer-hours');
+        const mEl = document.getElementById('timer-minutes');
+        const sEl = document.getElementById('timer-seconds');
+
+        if (dEl) dEl.innerText = String(d).padStart(2, '0');
+        if (hEl) hEl.innerText = String(h).padStart(2, '0');
+        if (mEl) mEl.innerText = String(m).padStart(2, '0');
+        if (sEl) sEl.innerText = String(s).padStart(2, '0');
       }, 1000);
     }
   </script>
