@@ -336,9 +336,10 @@
 
     <!-- TÓMBOLA VISUAL ACRÍLICA ANIMADA -->
     <!-- TÓMBOLA / RULETA CIRCULAR ESTILIZADA -->
+<!-- RULETA / TÓMBOLA CIRCULAR ESTILIZADA CON HISTORIAL DE 5 NÚMEROS -->
 <section id="tombola-section" class="bg-slate-800/80 border border-amber-500/30 rounded-2xl p-6 md:p-8 shadow-2xl relative text-center">
   <div class="max-w-xl mx-auto space-y-2 mb-6">
-    <h2 class="text-3xl font-black text-white">Ruleta de la Suerte</h2>
+    <h2 class="text-3xl font-black text-white">Ruleta de la Suerte en Vivo</h2>
     <p class="text-xs sm:text-sm text-slate-300">20 tiros de descarte y el tiro 21 define al ganador oficial</p>
   </div>
 
@@ -347,16 +348,21 @@
     <!-- Ruleta Circular Estilizada -->
     <div class="relative w-64 h-64 sm:w-72 sm:h-72 rounded-full gold-gradient-bg p-1.5 shadow-[0_0_30px_rgba(212,175,55,0.3)] flex items-center justify-center">
       <div class="w-full h-full bg-slate-950 rounded-full flex flex-col items-center justify-center relative overflow-hidden border-4 border-slate-900 shadow-inner">
-        <!-- Anillo decorativo interior -->
         <div class="absolute inset-2 rounded-full border border-amber-500/20 pointer-events-none"></div>
         
-        <!-- Indicador de tiro actual -->
         <span class="text-xs font-bold text-amber-400 uppercase tracking-widest mb-1" id="tombola-shot-count">Tiro 1 / 21</span>
         
-        <!-- Número en pantalla -->
         <div id="tombola-display-num" class="text-5xl sm:text-6xl font-black tracking-widest text-emerald-400 drop-shadow-[0_0_10px_rgba(16,185,129,0.4)]">000</div>
         
         <span class="text-[10px] text-slate-400 mt-1 uppercase tracking-wider">Número en juego</span>
+      </div>
+    </div>
+
+    <!-- Historial de los últimos 5 números salientes (Visible para el público) -->
+    <div class="w-full max-w-md bg-slate-900/90 border border-slate-700/80 rounded-xl p-3">
+      <span class="text-[11px] font-bold text-amber-400 uppercase tracking-wider block mb-2"><i class="fa-solid fa-history mr-1"></i> Últimos números (Historial):</span>
+      <div id="history-balls-container" class="flex justify-center items-center gap-2 overflow-hidden min-h-[40px]">
+        <span class="text-xs text-slate-500 italic">Aún no hay tiros registrados</span>
       </div>
     </div>
 
@@ -799,17 +805,17 @@
       }
     }
 
-    let currentSpinCount = 1;
+   let currentSpinCount = 1;
+    let historyNumbers = []; // Arreglo para guardar el historial de los números que van saliendo
+
     function spinWheel() {
       if (currentSpinCount > 21) return;
       let btn = document.getElementById('btn-spin-wheel');
       let display = document.getElementById('tombola-display-num');
       let msg = document.getElementById('spin-message');
-      let bowl = document.getElementById('balls-bowl');
       
       btn.disabled = true;
-      msg.innerHTML = "🌀 <b>¡Revistiendo esferas en la tómbola acrílica!</b>";
-      bowl.classList.add('shuffling');
+      msg.innerHTML = "🌀 <b>¡Girando la ruleta de la suerte!</b>";
 
       let counter = 0;
       let interval = setInterval(() => {
@@ -819,10 +825,16 @@
         
         if (counter > 30) {
           clearInterval(interval);
-          bowl.classList.remove('shuffling');
 
           let finalNum = String(Math.floor(Math.random() * 1000)).padStart(3, '0');
           display.innerText = finalNum;
+
+          // Añadimos el número al inicio del historial y limitamos a máximo 5
+          historyNumbers.unshift(finalNum);
+          if (historyNumbers.length > 5) {
+            historyNumbers.pop();
+          }
+          renderHistoryBalls();
 
           if (currentSpinCount < 21) {
             msg.innerHTML = `❌ Tiro #${currentSpinCount}: El número <strong>${finalNum}</strong> queda descartado.`;
@@ -848,6 +860,29 @@
           }
         }
       }, 80);
+    }
+
+    // Función para renderizar el historial de máximo 5 esferas/números para el público
+    function renderHistoryBalls() {
+      const container = document.getElementById('history-balls-container');
+      if (!container) return;
+      
+      if (historyNumbers.length === 0) {
+        container.innerHTML = `<span class="text-xs text-slate-500 italic">Aún no hay tiros registrados</span>`;
+        return;
+      }
+
+      container.innerHTML = '';
+      historyNumbers.forEach((num, index) => {
+        const ball = document.createElement('div');
+        let styleClass = index === 0 
+          ? 'bg-amber-500 text-slate-950 font-black scale-105 shadow-md border-amber-300' 
+          : 'bg-slate-800 text-slate-300 font-bold border-slate-700';
+        
+        ball.className = `w-10 h-10 rounded-full flex items-center justify-center text-xs border transition-all duration-300 ${styleClass}`;
+        ball.innerText = num;
+        container.appendChild(ball);
+      });
     }
 
     function startCountdown() {
