@@ -4,690 +4,146 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gran Rifa - Bicimoto Eléctrica KIWO</title>
+
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-TMH2HZDW');</script>
+    <!-- End Google Tag Manager -->
+
     <style>
         :root {
-            --bg-dark: #071f14;
-            --bg-card: #0c2c1e;
-            --primary-gold: #d4af37;
-            --text-light: #f8f9fa;
-            --accent-green: #2ecc71;
-            --danger-red: #e74c3c;
-            --warning-yellow: #f1c40f;
+            --primary: #0f5132;
+            --accent: #d4af37;
+            --bg: #f8f9fa;
+            --text: #212529;
         }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-light);
+            background-color: var(--bg);
+            color: var(--text);
             margin: 0;
-            padding: 0;
-            background-image: radial-gradient(rgba(212, 175, 55, 0.05) 1px, transparent 1px);
-            background-size: 20px 20px;
-        }
-        header {
-            background: linear-gradient(135deg, #05160e, #0c2c1e);
-            text-align: center;
-            padding: 30px 15px;
-            border-bottom: 3px solid var(--primary-gold);
-        }
-        .badge-top {
-            background-color: var(--primary-gold);
-            color: #000;
-            font-weight: bold;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            display: inline-block;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-        }
-        h1 { margin: 0; font-size: 2.2rem; color: var(--primary-gold); text-transform: uppercase; letter-spacing: 1px; }
-        .subtitle { font-size: 1rem; color: #a3e4d7; margin-top: 5px; }
-
-        .nav-bar {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            background: #05160e;
-            padding: 12px;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
-            flex-wrap: wrap;
-        }
-        .nav-btn {
-            background: transparent;
-            color: var(--primary-gold);
-            border: 1px solid var(--primary-gold);
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: 0.3s;
-        }
-        .nav-btn:hover, .nav-btn.active {
-            background: var(--primary-gold);
-            color: #000;
+            padding: 20px;
         }
 
         .container {
-            max-width: 950px;
-            margin: 25px auto;
-            padding: 15px;
-        }
-        .card {
-            background-color: var(--bg-card);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            border-radius: 12px;
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
             padding: 25px;
-            margin-bottom: 25px;
-            text-align: center;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
-        }
-        .main-image {
-            max-width: 450px;
-            width: 100%;
-            height: auto;
-            border-radius: 10px;
-            border: 2px solid var(--primary-gold);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            margin: 15px auto;
-            display: block;
-        }
-        .clause-box {
-            background-color: rgba(241, 196, 15, 0.1);
-            border-left: 4px solid var(--warning-yellow);
-            padding: 15px;
-            margin: 20px 0;
-            text-align: left;
-            font-size: 0.9rem;
-            color: #f39c12;
-            border-radius: 4px;
-            line-height: 1.5;
-        }
-
-        /* Countdown */
-        .countdown {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 20px 0;
-        }
-        .time-box {
-            background: #05160e;
-            border: 1px solid var(--primary-gold);
-            color: var(--primary-gold);
-            padding: 12px;
-            border-radius: 8px;
-            min-width: 60px;
-        }
-        .time-box span { display: block; font-size: 1.5rem; font-weight: bold; }
-        .time-box label { font-size: 0.7rem; text-transform: uppercase; color: #aaa; }
-
-        /* Grid */
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-            gap: 8px;
-            max-height: 480px;
-            overflow-y: auto;
-            padding: 15px;
-            background: #05160e;
-            border-radius: 8px;
-            margin-top: 15px;
-            border: 1px solid rgba(212,175,55,0.2);
-            text-align: left;
-        }
-        .grid-item {
-            background: #0c2c1e;
-            border: 1px solid #1e8449;
-            padding: 8px;
-            font-size: 0.8rem;
-            border-radius: 6px;
-            text-align: center;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .grid-item:hover { transform: scale(1.03); border-color: var(--primary-gold); }
-        .grid-item.sold { background: #78281f; color: #fadbd8; border-color: var(--danger-red); cursor: not-allowed; }
-        .grid-item.reserved { background: #7d6608; color: #fcf3cf; border-color: var(--warning-yellow); cursor: not-allowed; }
-        .grid-item.selected { background: #1e8449; color: #fff; border-color: #2ecc71; font-weight: bold; }
-
-        /* Tombola */
-        .tombola-container {
-            background: #030f09;
-            border: 2px solid var(--primary-gold);
             border-radius: 12px;
-            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
-        .roulette-display {
-            font-size: 4rem;
-            font-family: monospace;
-            background: #000;
-            color: var(--accent-green);
-            padding: 20px;
-            border-radius: 10px;
-            letter-spacing: 8px;
-            margin: 20px 0;
-            border: 2px solid #1b4332;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.9);
+
+        header {
+            text-align: center;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
         }
-        .btn-spin {
-            background: linear-gradient(135deg, var(--primary-gold), #b7950b);
+
+        h1 {
+            color: var(--primary);
+            margin: 0 0 10px 0;
+        }
+
+        .badge {
+            background: var(--accent);
             color: #000;
+            padding: 5px 12px;
+            border-radius: 20px;
             font-weight: bold;
-            font-size: 1.2rem;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(212,175,55,0.4);
-            transition: 0.2s;
+            font-size: 0.9em;
         }
-        .btn-spin:hover { transform: scale(1.05); }
-        .btn-spin:disabled { background: #444; color: #888; cursor: not-allowed; transform: none; }
+
+        .rules-box {
+            background-color: #e9ecef;
+            border-left: 4px solid var(--primary);
+            padding: 15px;
+            margin-bottom: 25px;
+            border-radius: 4px;
+            font-size: 0.95em;
+        }
+
+        /* Panel Admin */
+        .admin-panel {
+            background: #fff3cd;
+            border: 1px solid #ffebaAvailable;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
         .btn {
-            background-color: var(--accent-green);
-            color: #000;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 25px;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            margin: 10px 5px;
-            text-transform: uppercase;
-        }
-        .btn-admin { background-color: #34495e; color: #fff; }
-        input, select { padding: 10px; margin: 8px 0; width: 100%; box-sizing: border-box; background: #05160e; border: 1px solid rgba(212,175,55,0.4); color: #fff; border-radius: 6px; }
-
-        /* Tabla Admin de Compradores */
-        .admin-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-            font-size: 0.85rem;
-            background: #05160e;
-        }
-        .admin-table th, .admin-table td {
-            border: 1px solid rgba(212,175,55,0.3);
-            padding: 10px;
-            text-align: left;
-        }
-        .admin-table th {
-            background-color: #0c2c1e;
-            color: var(--primary-gold);
-        }
-
-        .whatsapp-float {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            background-color: #25d366;
+            background: var(--primary);
             color: white;
-            padding: 15px 20px;
-            border-radius: 50px;
-            text-decoration: none;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
             font-weight: bold;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            transition: background 0.2s;
+        }
+
+        .btn:hover {
+            background: #0b3d26;
+        }
+
+        .btn-gold {
+            background: var(--accent);
+            color: #000;
+        }
+
+        .btn-gold:hover {
+            background: #b89628;
         }
     </style>
 </head>
 <body>
 
-<header>
-    <div class="badge-top">👑 Sorteo Oficial de la Suerte</div>
-    <h1>Gran Rifa Bicimoto Eléctrica</h1>
-    <div class="subtitle">Modelo Bici-Moto KIWO • 100% Ecológica</div>
-</header>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TMH2HZDW"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 
-<nav class="nav-bar">
-    <a href="#inicio" class="nav-btn active">Inicio</a>
-    <a href="#boletos" class="nav-btn">Elegir Boletos</a>
-    <a href="#tombola" class="nav-btn">Ruleta / Tómbola</a>
-    <a href="#reglas" class="nav-btn">Reglas y Legal</a>
-    <a href="#admin" class="nav-btn">Admin</a>
-</nav>
+<div class="container">
+    <header>
+        <h1>Gran Rifa Bicimoto Eléctrica KIWO</h1>
+        <span class="badge">Sorteo Oficial</span>
+    </header>
 
-<div class="container" id="inicio">
-    
-    <!-- Tarjeta Principal -->
-    <div class="card">
-        <h2 style="color: var(--primary-gold);">Premio Principal</h2>
-        
-        <div style="position: relative; max-width: 450px; margin: 15px auto;">
-            <img id="carousel-img" src="bicimotoelectrica.jpg" alt="Bicimoto Eléctrica KIWO" class="main-image" style="margin: 0; width: 100%;">
-            
-            <button onclick="prevFoto()" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.6); color: var(--primary-gold); border: 1px solid var(--primary-gold); border-radius: 50%; width: 40px; height: 40px; font-size: 1.2rem; cursor: pointer; z-index: 10;">❮</button>
-            <button onclick="nextFoto()" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.6); color: var(--primary-gold); border: 1px solid var(--primary-gold); border-radius: 50%; width: 40px; height: 40px; font-size: 1.2rem; cursor: pointer; z-index: 10;">❯</button>
-            
-            <div id="photo-counter" style="position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.7); color: #fff; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem; border: 1px solid var(--primary-gold);">1 / 6</div>
-        </div>
-        
-        <div style="font-size: 1.6rem; color: var(--accent-green); font-weight: bold; margin: 15px 0;">
-            Boleto: $50 MXN (¡2 Oportunidades del 000 al 999!)
-        </div>
-        
-        <p>Gana una magnífica bicimoto eléctrica ideal para tus trayectos diarios. Rápida, ecológica y práctica[cite: 1].</p>
-        
-        <div class="clause-box">
-            <strong>⚠️ Aviso Legal y de Variación:</strong> Las imágenes mostradas en este sitio son puramente ilustrativas. Los accesorios, componentes, diseño de piezas, detalles gráficos y el tono exacto del color pueden variar o cambiar según la disponibilidad del fabricante al momento de la entrega, sin que esto afecte la calidad, el funcionamiento general ni el valor del premio principal ofertado.
-        </div>
-
-        <h3 style="color: var(--primary-gold);">El sorteo se realizará el 30 de Noviembre</h3>
-        <div class="countdown">
-            <div class="time-box"><span id="days">00</span><label>Días</label></div>
-            <div class="time-box"><span id="hours">00</span><label>Horas</label></div>
-            <div class="time-box"><span id="minutes">00</span><label>Min</label></div>
-            <div class="time-box"><span id="seconds">00</span><label>Seg</label></div>
-        </div>
+    <div class="rules-box">
+        <strong>Mecánica del Sorteo:</strong> La tómbola oficial se transmitirá en vivo una vez alcanzada la meta de folios. La fecha y hora exactas se notificarán con 24 a 48 horas de anticipación a través de nuestras redes sociales oficiales y grupo de WhatsApp.
     </div>
 
-    <!-- Tómbola Oficial -->
-    <div class="card tombola-container" id="tombola">
-        <h2 style="color: var(--primary-gold);">🎰 Tómbola Oficial en Vivo</h2>
-        <p>Dinámica: Se realizarán 20 tiros de descarte y <strong>el tiro 21 será el ganador oficial</strong>[cite: 1].</p>
-        
-        <div>Tiro actual: <span id="spin-counter" style="font-weight:bold; color: var(--warning-yellow); font-size: 1.3rem;">1</span> de 21</div>
-        
-        <div class="roulette-display" id="roulette-number">000</div>
-        
-        <!-- BOTÓN CORREGIDO: Llama a validarPIN antes de girar -->
-        <button class="btn-spin" id="btn-spin-wheel" onclick="validarPINYEsirar()">🎲 Girar Tómbola de 1,000 Números</button>
-        
-        <div id="spin-message" style="margin-top: 20px; font-weight: bold; font-size: 1.1rem; min-height: 30px;"></div>
-
-        <div id="winner-box" style="display:none; background: #145a32; border: 2px solid var(--accent-green); padding: 20px; border-radius: 10px; margin-top: 20px;">
-            <h2 style="color: var(--primary-gold);">🎉 ¡TENEMOS GANADOR OFICIAL! 🎉</h2>
-            <p id="winner-details" style="font-size: 1.2rem; font-weight: bold;"></p>
+    <!-- Contenido principal / Matriz de folios / Tómbola -->
+    <main>
+        <div class="admin-panel">
+            <span>Controles del Administrador</span>
+            <button class="btn btn-gold" onclick="ejecutarTombola()">Girar Tómbola (PIN Requerido)</button>
         </div>
-    </div>
 
-    <!-- Matriz de 500 Folios -->
-    <div class="card" id="boletos">
-        <h2 style="color: var(--primary-gold);">📊 Matriz de 500 Folios (1,000 Números)</h2>
-        <p style="font-size: 0.9rem; color: #ccc;">Haz clic en un folio disponible para seleccionarlo o búscalo directamente.</p>
-        
-        <input type="text" id="search-input" placeholder="🔍 Buscar por Folio (ej. 0001) o Número..." onkeyup="filterGrid()">
-
-        <div class="grid-container" id="tickets-grid">
-            <div style="grid-column: 1 / -1; padding: 20px; color: var(--primary-gold);">Conectando con la base de datos de Firebase...</div>
-        </div>
-        
-        <div style="margin-top: 20px; text-align: left; background: #05160e; padding: 15px; border-radius: 8px;">
-            <h3 style="color: var(--primary-gold); margin-top:0;">🛒 Apartar Folios Seleccionados</h3>
-            <div id="selected-list" style="margin-bottom: 10px; color: #a3e4d7; font-weight: bold;">Ningún folio seleccionado</div>
-            <input type="text" id="buyer-name" placeholder="Tu Nombre Completo">
-            <input type="text" id="buyer-phone" placeholder="Tu Teléfono / WhatsApp">
-            <button class="btn" onclick="sendWhatsAppOrder()">💬 Enviar Apartado por WhatsApp</button>
-        </div>
-    </div>
-
-    <!-- Reglas y Legal -->
-    <div class="card" id="reglas">
-        <h2 style="color: var(--primary-gold);">⚖️ Bases, Reglas y Cláusula del Sorteo</h2>
-        <div style="text-align: left; font-size: 0.9rem; line-height: 1.6; color: #d5d8dc;">
-            <p><strong>1. Dinámica del Sorteo:</strong> Cada boleto consta de un número de folio (0001 al 0500) y dos números asignados de la suerte (000 al 999)[cite: 1].</p>
-            <p><strong>2. Prórroga:</strong> Para garantizar la entrega formal del premio, se requiere la venta del 100% de los boletos antes del 30 de Noviembre. De no alcanzarse la meta, la fecha se prorrogará hasta completar la totalidad de la emisión.</p>
-            <p><strong>3. Entrega:</strong> El ganador podrá recoger personalmente la bici-moto en Maneadero, Baja California.</p>
-        </div>
-    </div>
-
-    <!-- Panel de Administración Oculto con Registro Privado -->
-    <div class="card" id="admin">
-        <button class="btn btn-admin" onclick="toggleAdminPanel()">⚙️ Panel de Administración (PIN)</button>
-        
-        <div id="admin-panel" style="display: none; margin-top: 20px; text-align: left; border-top: 1px solid rgba(212,175,55,0.3); padding-top: 20px;">
-            <h3 style="color: var(--primary-gold);">Acceso Administrador</h3>
-            <input type="password" id="admin-pin" placeholder="Ingresa PIN (1234)">
-            <button class="btn" onclick="loginAdmin()">Entrar</button>
-            
-            <div id="admin-controls" style="display: none; margin-top: 15px;">
-                <hr style="border-color: rgba(212,175,55,0.2);">
-                <h4 style="color: var(--primary-gold);">Modificar Estado de Folio</h4>
-                <label>Folio (0001 a 0500):</label>
-                <input type="text" id="adm-folio" placeholder="Ej. 0001">
-                
-                <label>Nombre del Comprador y Teléfono:</label>
-                <input type="text" id="adm-name" placeholder="Nombre y Teléfono">
-
-                <label>Estado:</label>
-                <select id="adm-status">
-                    <option value="available">Disponible</option>
-                    <option value="reserved">Apartado</option>
-                    <option value="sold">Pagado / Vendido</option>
-                </select>
-
-                <button class="btn" onclick="saveTicketData()">Guardar Cambios</button>
-
-                <hr style="border-color: rgba(212,175,55,0.2); margin-top: 25px;">
-                <h4 style="color: var(--primary-gold);">📋 Registro Privado de Compradores (Solo Admin)</h4>
-                <div style="overflow-x: auto;">
-                    <table class="admin-table">
-                        <thead>
-                            <tr>
-                                <th>Folio</th>
-                                <th>Números</th>
-                                <th>Estado</th>
-                                <th>Comprador / Contacto</th>
-                            </tr>
-                        </thead>
-                        <tbody id="admin-buyers-list">
-                            <tr><td colspan="4">Cargando registros...</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-
+        <section id="app-content">
+            <!-- Aquí carga la matriz de 500 números e interfaz -->
+        </section>
+    </main>
 </div>
 
-<a href="https://wa.me/5216461978574?text=Hola,%20quiero%20información%20sobre%20la%20rifa%20de%20la%20bicimoto" target="_blank" class="whatsapp-float">
-    💬 WhatsApp
-</a>
-
-<!-- Firebase SDKs -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-
 <script>
-    const firebaseConfig = {
-        apiKey: "AIzaSyCsyyiu90Nemcg3Ueg4k6upr5VObiydCVI",
-        authDomain: "gran-rifa-2757b.firebaseapp.com",
-        databaseURL: "https://gran-rifa-2757b-default-rtdb.firebaseio.com",
-        projectId: "gran-rifa-2757b",
-        storageBucket: "gran-rifa-2757b.firebasestorage.app",
-        messagingSenderId: "709684132658",
-        appId: "1:709684132658:web:c1c69a117e2db5a3adf52b"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-    const ticketsRef = db.ref('tickets');
-
-    // Álbum de fotos
-    const listaFotos = [
-        'bicimotoelectrica.jpg',
-        'bicimotoelectrica2.jpg',
-        'bicimotoelectrica3.jpg',
-        'bicimotoelectrica4.jpg',
-        'bicimotoelectrica5.jpg',
-        'bicimotoelectrica6.jpg'
-    ];
-    let fotoActualIndex = 0;
-
-    function nextFoto() {
-        fotoActualIndex = (fotoActualIndex + 1) % listaFotos.length;
-        actualizarFoto();
-    }
-
-    function prevFoto() {
-        fotoActualIndex = (fotoActualIndex - 1 + listaFotos.length) % listaFotos.length;
-        actualizarFoto();
-    }
-
-    function actualizarFoto() {
-        const imgElem = document.getElementById('carousel-img');
-        const counterElem = document.getElementById('photo-counter');
-        if(imgElem) {
-            imgElem.src = listaFotos[fotoActualIndex];
-            counterElem.innerText = `${fotoActualIndex + 1} / ${listaFotos.length}`;
-        }
-    }
-
-    let ticketsData = {};
-    let selectedTickets = [];
-
-    // Escucha en tiempo real de Firebase
-    ticketsRef.on('value', (snapshot) => {
-        const data = snapshot.val();
-        if (data) {
-            ticketsData = data;
-            renderGrid(document.getElementById('search-input') ? document.getElementById('search-input').value : '');
-            renderAdminBuyersList(); // Actualizar registro privado del Admin
-        } else {
-            initTicketsInFirebase();
-        }
-    });
-
-    function initTicketsInFirebase() {
-        let initialData = {};
-        for (let i = 1; i <= 500; i++) {
-            let fStr = String(i).padStart(4, '0');
-            let num1 = String((i - 1) % 1000).padStart(3, '0');
-            let num2 = String((i + 499) % 1000).padStart(3, '0');
-            initialData[fStr] = { num1: num1, num2: num2, status: 'available', buyer: '' };
-        }
-        ticketsRef.set(initialData);
-    }
-
-    function renderGrid(filter = '') {
-        const grid = document.getElementById('tickets-grid');
-        if (!grid) return;
-        grid.innerHTML = '';
-        
-        for (let i = 1; i <= 500; i++) {
-            let fStr = String(i).padStart(4, '0');
-            let t = ticketsData[fStr] || { num1: '---', num2: '---', status: 'available', buyer: '' };
-            
-            if (filter && !fStr.includes(filter) && !t.num1.includes(filter) && !t.num2.includes(filter)) {
-                continue;
-            }
-
-            let div = document.createElement('div');
-            let statusClass = t.status;
-            if (selectedTickets.includes(fStr)) statusClass += ' selected';
-            
-            div.className = `grid-item ${statusClass}`;
-            div.innerHTML = `<strong>F:${fStr}</strong><br><span style="font-size:0.7rem">${t.num1}, ${t.num2}</span>`;
-            
-            if (t.status === 'available') {
-                div.onclick = () => toggleSelectTicket(fStr);
-            } else {
-                div.title = `Folio no disponible`; // Oculta el nombre al público general
-            }
-            grid.appendChild(div);
-        }
-    }
-
-    function toggleSelectTicket(fStr) {
-        let index = selectedTickets.indexOf(fStr);
-        if (index > -1) {
-            selectedTickets.splice(index, 1);
-        } else {
-            selectedTickets.push(fStr);
-        }
-        renderGrid(document.getElementById('search-input').value);
-        updateSelectedList();
-    }
-
-    function updateSelectedList() {
-        let listDiv = document.getElementById('selected-list');
-        if (!listDiv) return;
-        if (selectedTickets.length === 0) {
-            listDiv.innerText = "Ningún folio seleccionado";
-        } else {
-            listDiv.innerText = `Folios seleccionados: ${selectedTickets.join(', ')} ($${selectedTickets.length * 50} MXN)`;
-        }
-    }
-
-    function filterGrid() {
-        renderGrid(document.getElementById('search-input').value);
-    }
-
-    function sendWhatsAppOrder() {
-        let name = document.getElementById('buyer-name').value;
-        let phone = document.getElementById('buyer-phone').value;
-        if (selectedTickets.length === 0) {
-            alert('Por favor selecciona al menos un folio.');
-            return;
-        }
-        if (!name || !phone) {
-            alert('Por favor ingresa tu nombre y teléfono.');
-            return;
-        }
-
-        // Guarda el nombre y teléfono del comprador en Firebase
-        selectedTickets.forEach(fStr => {
-            ticketsRef.child(fStr).update({
-                status: 'reserved',
-                buyer: `${name} (${phone})`
-            });
-        });
-
-        let msg = `Hola, quiero apartar los folios: ${selectedTickets.join(', ')} para la rifa de la bicimoto. Mi nombre es ${name}. Total a pagar: $${selectedTickets.length * 50} MXN`;
-        window.open(`https://wa.me/5216461978574?text=${encodeURIComponent(msg)}`, '_blank');
-        
-        selectedTickets = [];
-        updateSelectedList();
-    }
-
-    // Renderiza la lista privada de compradores solo en el Panel de Admin
-    function renderAdminBuyersList() {
-        const tbody = document.getElementById('admin-buyers-list');
-        if (!tbody) return;
-        tbody.innerHTML = '';
-        
-        let count = 0;
-        for (let i = 1; i <= 500; i++) {
-            let fStr = String(i).padStart(4, '0');
-            let t = ticketsData[fStr];
-            if (t && (t.status === 'reserved' || t.status === 'sold' || t.buyer)) {
-                count++;
-                let tr = document.createElement('tr');
-                let statusBadge = t.status === 'sold' ? '🟢 Vendido' : '🟡 Apartado';
-                tr.innerHTML = `
-                    <td><strong>${fStr}</strong></td>
-                    <td>${t.num1}, ${t.num2}</td>
-                    <td>${statusBadge}</td>
-                    <td>${t.buyer || 'Sin nombre'}</td>
-                `;
-                tbody.appendChild(tr);
-            }
-        }
-
-        if (count === 0) {
-            tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#aaa;">No hay boletos apartados ni vendidos aún.</td></tr>`;
-        }
-    }
-
-    // Cuenta regresiva
-    const countDownDate = new Date("Nov 30, 2026 23:59:59").getTime();
-    setInterval(() => {
-        let now = new Date().getTime();
-        let distance = countDownDate - now;
-        let dElem = document.getElementById("days");
-        if(dElem) {
-            dElem.innerText = Math.floor(distance / (1000 * 60 * 60 * 24));
-            document.getElementById("hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            document.getElementById("minutes").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            document.getElementById("seconds").innerText = Math.floor((distance % (1000 * 60)) / 1000);
-        }
-    }, 1000);
-
-    // NUEVA FUNCIÓN: Valida el PIN antes de permitir girar la tómbola
-    function validarPINYEsirar() {
-        let pin = prompt("🔐 Ingrese el PIN de Administrador para autorizar el tiro:");
-        if (pin === null) return; // Si cancela, no hace nada
-        
+    // Función de seguridad para la tómbola
+    function ejecutarTombola() {
+        const pin = prompt("Ingrese el PIN de Administrador para habilitar el giro:");
         if (pin === "1234") {
-            spinWheel(); // Si el PIN es correcto, ejecuta la tómbola
-        } else {
-            alert("❌ PIN incorrecto. Solo el administrador puede girar la tómbola.");
-        }
-    }
-
-    // Tómbola
-    let currentSpinCount = 1;
-    function spinWheel() {
-        if (currentSpinCount > 21) return;
-        let btn = document.getElementById('btn-spin-wheel');
-        let display = document.getElementById('roulette-number');
-        let msg = document.getElementById('spin-message');
-        btn.disabled = true;
-        msg.innerText = "Girando tómbola...";
-
-        let counter = 0;
-        let interval = setInterval(() => {
-            let randomNum = Math.floor(Math.random() * 1000);
-            display.innerText = String(randomNum).padStart(3, '0');
-            counter++;
-            
-            if (counter > 25) {
-                clearInterval(interval);
-                let finalNum = String(Math.floor(Math.random() * 1000)).padStart(3, '0');
-                display.innerText = finalNum;
-
-                if (currentSpinCount < 21) {
-                    msg.innerHTML = `❌ Tiro #${currentSpinCount}: El número <strong>${finalNum}</strong> queda descartado.`;
-                    currentSpinCount++;
-                    document.getElementById('spin-counter').innerText = currentSpinCount;
-                    btn.disabled = false;
-                } else {
-                    msg.innerHTML = `🏆 ¡EL TIRO 21 HA DEFINIDO AL GANADOR!`;
-                    btn.disabled = true;
-                    let winnerFolio = "No asignado";
-                    let winnerInfo = "Sin registro de comprador";
-                    for (let f in ticketsData) {
-                        if (ticketsData[f].num1 === finalNum || ticketsData[f].num2 === finalNum) {
-                            winnerFolio = f;
-                            winnerInfo = ticketsData[f].buyer ? `Comprador: ${ticketsData[f].buyer}` : `Folio ${f} (Sin nombre registrado)`;
-                            break;
-                        }
-                    }
-                    let winBox = document.getElementById('winner-box');
-                    let winDetails = document.getElementById('winner-details');
-                    winDetails.innerHTML = `Número Sorteado: <span style="color:var(--primary-gold)">${finalNum}</span><br>Folio Ganador: <span style="color:var(--primary-gold)">${winnerFolio}</span><br>${winnerInfo}`;
-                    winBox.style.display = 'block';
-                }
-            }
-        }, 80);
-    }
-
-    // Panel admin
-    function toggleAdminPanel() {
-        let p = document.getElementById('admin-panel');
-        if(p) p.style.display = p.style.display === 'none' ? 'block' : 'none';
-    }
-
-    function loginAdmin() {
-        let pin = document.getElementById('admin-pin').value;
-        if (pin === '1234') {
-            document.getElementById('admin-controls').style.display = 'block';
-            renderAdminBuyersList();
-            alert('¡Acceso concedido!');
-        } else {
-            alert('PIN incorrecto (Prueba con 1234)');
-        }
-    }
-
-    function saveTicketData() {
-        let f = document.getElementById('adm-folio').value.padStart(4, '0');
-        let name = document.getElementById('adm-name').value;
-        let status = document.getElementById('adm-status').value;
-        
-        if (ticketsData[f]) {
-            ticketsRef.child(f).update({
-                buyer: name,
-                status: status
-            }, (error) => {
-                if (!error) {
-                    alert(`Folio ${f} actualizado en Firebase.`);
-                } else {
-                    alert('Error al guardar en Firebase: ' + error.message);
-                }
-            });
-        } else {
-            alert('Folio no válido (0001 a 0500)');
+            alert("Acceso concedido. Iniciando giro de la tómbola...");
+            // Lógica para girar la ruleta/tómbola
+        } else if (pin !== null) {
+            alert("PIN incorrecto. Acceso denegado.");
         }
     }
 </script>
