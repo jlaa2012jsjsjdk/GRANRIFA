@@ -335,46 +335,49 @@
     </section>
 
     <!-- TÓMBOLA VISUAL ACRÍLICA ANIMADA -->
-    <section id="tombola-section" class="bg-slate-800/80 border border-indigo-500/40 rounded-2xl p-6 md:p-8 shadow-2xl relative">
-      <div class="text-center max-w-2xl mx-auto space-y-2 mb-6">
-        <h2 class="text-3xl font-black text-white">Tómbola Digital en Vivo</h2>
-        <p class="text-xs sm:text-sm text-slate-300">Se realizarán 20 tiros de descarte y el tiro 21 será el ganador oficial</p>
+    <!-- TÓMBOLA / RULETA CIRCULAR ESTILIZADA -->
+<section id="tombola-section" class="bg-slate-800/80 border border-amber-500/30 rounded-2xl p-6 md:p-8 shadow-2xl relative text-center">
+  <div class="max-w-xl mx-auto space-y-2 mb-6">
+    <h2 class="text-3xl font-black text-white">Ruleta de la Suerte</h2>
+    <p class="text-xs sm:text-sm text-slate-300">20 tiros de descarte y el tiro 21 define al ganador oficial</p>
+  </div>
+
+  <div class="flex flex-col items-center justify-center space-y-6">
+    
+    <!-- Ruleta Circular Estilizada -->
+    <div class="relative w-64 h-64 sm:w-72 sm:h-72 rounded-full gold-gradient-bg p-1.5 shadow-[0_0_30px_rgba(212,175,55,0.3)] flex items-center justify-center">
+      <div class="w-full h-full bg-slate-950 rounded-full flex flex-col items-center justify-center relative overflow-hidden border-4 border-slate-900 shadow-inner">
+        <!-- Anillo decorativo interior -->
+        <div class="absolute inset-2 rounded-full border border-amber-500/20 pointer-events-none"></div>
+        
+        <!-- Indicador de tiro actual -->
+        <span class="text-xs font-bold text-amber-400 uppercase tracking-widest mb-1" id="tombola-shot-count">Tiro 1 / 21</span>
+        
+        <!-- Número en pantalla -->
+        <div id="tombola-display-num" class="text-5xl sm:text-6xl font-black tracking-widest text-emerald-400 drop-shadow-[0_0_10px_rgba(16,185,129,0.4)]">000</div>
+        
+        <span class="text-[10px] text-slate-400 mt-1 uppercase tracking-wider">Número en juego</span>
       </div>
+    </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-        <div class="lg:col-span-6 flex flex-col items-center justify-center p-6 bg-slate-900/80 rounded-2xl border border-slate-700">
-          
-          <!-- Tambor acrílico con esferas rodando -->
-          <div class="acrylic-drum mb-4" id="acrylic-drum">
-            <div class="balls-bowl" id="balls-bowl">
-              <div class="mini-ball mb-1">012</div>
-              <div class="mini-ball mb-2">489</div>
-              <div class="mini-ball mb-3">771</div>
-              <div class="mini-ball mb-4">235</div>
-              <div class="mini-ball mb-5">904</div>
-              <div class="mini-ball mb-6">316</div>
-            </div>
-          </div>
+    <!-- Botón de Giro -->
+    <button onclick="validarPINYEsirar()" id="btn-spin-wheel" class="px-8 py-3.5 rounded-xl font-extrabold gold-gradient-bg text-slate-950 shadow-lg hover:brightness-110 transition flex items-center gap-2 text-sm">
+      <i class="fa-solid fa-dharmachakra text-lg"></i> GIRAR RULETA (ADMIN)
+    </button>
 
-          <span class="text-xs font-semibold text-amber-400 mb-2" id="tombola-shot-count">Tiro 1 / 21</span>
-          <div id="tombola-display-num" class="text-4xl sm:text-5xl font-black tracking-widest text-emerald-400 bg-slate-950 px-6 py-3 rounded-xl border border-slate-800 shadow-inner">000</div>
-
-          <button onclick="validarPINYEsirar()" id="btn-spin-wheel" class="mt-6 px-6 py-3 rounded-xl font-bold bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg transition">
-            🎲 Girar Tómbola (PIN Admin)
-          </button>
-        </div>
-
-        <div class="lg:col-span-6 space-y-4">
-          <div id="spin-message" class="p-4 rounded-lg bg-slate-900/80 border border-indigo-500/30 text-center text-slate-300">
-            Presiona el botón para iniciar la tómbola oficial...
-          </div>
-          <div id="winner-box" class="hidden p-4 rounded-lg bg-emerald-950/80 border border-emerald-500/50 text-center">
-            <h3 class="text-lg font-black text-amber-400 mb-1">🎉 ¡TENEMOS GANADOR OFICIAL! 🎉</h3>
-            <p id="winner-details" class="text-sm text-slate-200"></p>
-          </div>
-        </div>
+    <!-- Mensajes y Ganador -->
+    <div class="w-full max-w-md space-y-3">
+      <div id="spin-message" class="p-3 rounded-xl bg-slate-900/90 border border-slate-700 text-xs sm:text-sm text-slate-300">
+        Presiona el botón para iniciar el sorteo oficial...
       </div>
-    </section>
+      <div id="winner-box" class="hidden p-4 rounded-xl bg-emerald-950/90 border border-emerald-500/50 text-center shadow-xl">
+        <h3 class="text-base font-black text-amber-400 mb-1">🎉 ¡TENEMOS GANADOR OFICIAL! 🎉</h3>
+        <p id="winner-details" class="text-xs sm:text-sm text-slate-200"></p>
+      </div>
+    </div>
+
+  </div>
+</section>
   </main>
 
   <!-- MODAL DE APARTADO / COMPRA CON WHATSAPP -->
