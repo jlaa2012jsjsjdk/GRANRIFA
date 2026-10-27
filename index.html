@@ -130,13 +130,13 @@
       </div>
     </section>
 
-    <!-- PROMO REFERIDOS MEJORADA -->
+    <!-- PROMO REFERIDOS AUTOMÁTICA -->
     <section id="promocion-referidos" class="bg-slate-800/80 border border-amber-500/30 rounded-2xl p-6 md:p-8 shadow-xl relative">
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-6 border-b border-slate-700">
         <div>
-          <span class="px-3 py-1 bg-amber-500/20 text-amber-300 text-xs font-bold rounded-full border border-amber-500/40"><i class="fa-solid fa-gift"></i> Promo 3x1</span>
+          <span class="px-3 py-1 bg-amber-500/20 text-amber-300 text-xs font-bold rounded-full border border-amber-500/40"><i class="fa-solid fa-gift"></i> Promo 3x1 Automática</span>
           <h2 class="text-2xl font-black text-white mt-2">¡Invita a 3 Amigos y Gana 1 Número Gratis!</h2>
-          <p class="text-sm text-slate-300 mt-1">Ingresa tus datos para generar tu enlace personalizado y reclamar tu premio al completar 3 referidos.</p>
+          <p class="text-sm text-slate-300 mt-1">Escribe tu nombre y teléfono. El sistema creará un enlace inteligente para ti de forma automática.</p>
         </div>
       </div>
 
@@ -144,19 +144,19 @@
         <div class="lg:col-span-7 space-y-4">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-900/60 p-4 rounded-xl border border-slate-700">
             <div>
-              <label class="block text-xs uppercase font-bold text-slate-300 mb-1">Tu Nombre / Alias:</label>
-              <input type="text" id="ref-user-name" placeholder="Ej. Carlos Pérez" oninput="updateReferralLink()" class="w-full bg-slate-800 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-400">
+              <label class="block text-xs uppercase font-bold text-slate-300 mb-1">Tu Nombre:</label>
+              <input type="text" id="ref-user-name" placeholder="Ej. Juan Pérez" oninput="saveUserData()" class="w-full bg-slate-800 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-400">
             </div>
             <div>
-              <label class="block text-xs uppercase font-bold text-slate-300 mb-1">Tu Teléfono / WhatsApp:</label>
-              <input type="tel" id="ref-user-phone" placeholder="Ej. 6461234567" oninput="updateReferralLink()" class="w-full bg-slate-800 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-400">
+              <label class="block text-xs uppercase font-bold text-slate-300 mb-1">Tu Teléfono:</label>
+              <input type="tel" id="ref-user-phone" placeholder="Ej. 6461234567" oninput="saveUserData()" class="w-full bg-slate-800 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-400">
             </div>
           </div>
 
           <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-700 space-y-3">
-            <label class="block text-xs uppercase font-bold text-slate-300">Tu Enlace Personalizado:</label>
+            <label class="block text-xs uppercase font-bold text-slate-300">Tu Enlace Personalizado Único:</label>
             <div class="flex items-center gap-2">
-              <input type="text" id="ref-link-output" readonly value="Ingresa tu nombre y teléfono arriba..." class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-amber-300 font-mono">
+              <input type="text" id="ref-link-output" readonly value="Escribe tu nombre y teléfono arriba..." class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-amber-300 font-mono">
               <button onclick="copyRefLink()" class="px-3 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg text-xs font-bold transition flex items-center gap-1"><i class="fa-solid fa-copy"></i> Copiar</button>
             </div>
             <button onclick="shareWhatsApp()" class="w-full py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold transition flex items-center justify-center gap-2">
@@ -167,7 +167,7 @@
 
         <div class="lg:col-span-5 bg-slate-900/60 p-5 rounded-xl border border-slate-700 flex flex-col justify-between space-y-4">
           <div>
-            <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2"><i class="fa-solid fa-chart-line text-emerald-400"></i> Tu Progreso de Referidos</h3>
+            <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2"><i class="fa-solid fa-chart-line text-emerald-400"></i> Tu Progreso Automático</h3>
             <div class="space-y-2 mb-4">
               <div class="flex justify-between text-xs font-bold">
                 <span class="text-slate-300">Amigos Confirmados:</span>
@@ -180,15 +180,15 @@
 
             <ul id="ref-friends-list" class="space-y-1.5 text-xs max-h-28 overflow-y-auto custom-scrollbar">
               <li class="p-2 bg-slate-800/80 rounded border border-slate-700/50 text-slate-400 flex justify-between">
-                <span>Esperando compras con tu link...</span>
+                <span>Esperando compras con tu enlace...</span>
               </li>
             </ul>
           </div>
 
           <!-- RECLAMAR PREMIO SI LLEGA A 3 -->
           <div id="claim-reward-box" class="hidden pt-3 border-t border-slate-800 space-y-2">
-            <p class="text-xs text-emerald-400 font-bold">🎉 ¡Felicidades! Completaste tus 3 referidos.</p>
-            <label class="block text-[11px] text-slate-300">Selecciona tu Folio de Regalo disponible:</label>
+            <p class="text-xs text-emerald-400 font-bold">🎉 ¡Completaste tus 3 referidos!</p>
+            <label class="block text-[11px] text-slate-300">Selecciona tu Folio de Regalo:</label>
             <select id="reward-folio-select" class="w-full bg-slate-800 border border-slate-600 rounded-lg px-2 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-400">
               <option value="">-- Elige un Folio Disponible --</option>
             </select>
@@ -271,9 +271,11 @@
           <label class="block text-xs font-bold text-slate-300 mb-1">Teléfono / WhatsApp:</label>
           <input type="tel" id="buyer-phone" required placeholder="Ej. 646 123 4567" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-400">
         </div>
-        <div>
-          <label class="block text-xs font-bold text-slate-300 mb-1">¿Te invitó un amigo? (Alias del referido):</label>
-          <input type="text" id="buyer-ref-code" placeholder="Alias del amigo (Opcional)" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-400">
+
+        <!-- CAMPO DE REFERIDO AUTOMÁTICO (INVISIBIBLE/BLOQUEADO PARA EVITAR ERRORES) -->
+        <div id="ref-code-box" class="hidden bg-slate-950 p-2.5 rounded-lg border border-emerald-500/40">
+          <span class="text-[10px] text-emerald-400 font-bold block">🎁 Invitado por: <span id="display-ref-name" class="text-white"></span></span>
+          <input type="hidden" id="buyer-ref-code">
         </div>
 
         <button type="submit" class="w-full py-3 rounded-xl font-extrabold green-gradient-bg text-slate-950 shadow-lg hover:brightness-110 transition mt-2 flex items-center justify-center gap-2">
@@ -333,13 +335,32 @@
     let ticketsData = {};
     let selectedFolioStr = null;
 
-    // Detectar si vino desde un link de referido (?ref=Nombre)
+    // GENERAR O CARGAR CÓDIGO ÚNICO DEL USUARIO
+    function getMyUniqueCode() {
+      let code = localStorage.getItem('kiwo_my_ref_code');
+      if (!code) {
+        code = 'REF-' + Math.random().toString(36).substring(2, 7).toUpperCase();
+        localStorage.setItem('kiwo_my_ref_code', code);
+      }
+      return code;
+    }
+
     window.onload = function() {
+      // Cargar datos guardados del usuario si ya los puso antes
+      const savedName = localStorage.getItem('kiwo_user_name') || '';
+      const savedPhone = localStorage.getItem('kiwo_user_phone') || '';
+      if(savedName) document.getElementById('ref-user-name').value = savedName;
+      if(savedPhone) document.getElementById('ref-user-phone').value = savedPhone;
+
+      updateReferralLink();
+
+      // Detectar si el usuario actual entró mediante un enlace de referido de alguien más (?ref=REF-XXXX)
       const urlParams = new URLSearchParams(window.location.search);
       const refParam = urlParams.get('ref');
       if (refParam) {
-        document.getElementById('buyer-ref-code').value = decodeURIComponent(refParam);
+        localStorage.setItem('kiwo_referred_by_code', refParam);
       }
+
       startCountdown();
     };
 
@@ -421,6 +442,18 @@
         <div class="bg-slate-900 p-2.5 rounded-lg border border-amber-500/30"><span class="text-[10px] text-slate-400 block">Número 1</span><span class="text-xl font-black text-amber-400">${t.num1}</span></div>
         <div class="bg-slate-900 p-2.5 rounded-lg border border-amber-500/30"><span class="text-[10px] text-slate-400 block">Número 2</span><span class="text-xl font-black text-amber-400">${t.num2}</span></div>
       `;
+
+      // Autocompletar el referido automáticamente si el usuario entró con enlace
+      const refByCode = localStorage.getItem('kiwo_referred_by_code');
+      if (refByCode) {
+        document.getElementById('buyer-ref-code').value = refByCode;
+        document.getElementById('display-ref-name').innerText = refByCode;
+        document.getElementById('ref-code-box').classList.remove('hidden');
+      } else {
+        document.getElementById('buyer-ref-code').value = '';
+        document.getElementById('ref-code-box').classList.add('hidden');
+      }
+
       document.getElementById('folio-modal').classList.remove('hidden');
     }
 
@@ -446,7 +479,7 @@
       msg += `🎟️ *Mis Números de la Suerte:* ${t.num1} y ${t.num2}\n`;
       msg += `👤 *Nombre:* ${name}\n`;
       msg += `📱 *Teléfono:* ${phone}\n`;
-      if (refCode) msg += `🎁 *Referido por:* ${refCode}\n`;
+      if (refCode) msg += `🎁 *Código de Referido:* ${refCode}\n`;
       msg += `💰 *Total a Pagar:* $50 MXN\n\n`;
       msg += `*Por favor compárteme la cuenta / CLABE bancaria para realizar mi depósito o transferencia.*`;
 
@@ -454,19 +487,14 @@
       window.open(`https://wa.me/5216461978574?text=${encodeURIComponent(msg)}`, '_blank');
     }
 
-    // PROGRESO DE REFERIDOS Y RECLAMO DE PREMIO
+    // PROGRESO DE REFERIDOS AUTOMÁTICO
     function updateReferralProgress() {
-      const name = document.getElementById('ref-user-name').value.trim();
-      if (!name) {
-        document.getElementById('claim-reward-box').classList.add('hidden');
-        return;
-      }
-
+      const myCode = getMyUniqueCode();
       let count = 0;
       let listHtml = '';
 
       for (let f in ticketsData) {
-        if (ticketsData[f].refCode && ticketsData[f].refCode.toLowerCase() === name.toLowerCase()) {
+        if (ticketsData[f].refCode && ticketsData[f].refCode === myCode) {
           count++;
           listHtml += `<li class="p-2 bg-slate-800/80 rounded border border-slate-700 text-emerald-400 flex justify-between">
             <span>Amigo: ${ticketsData[f].buyer || 'Comprador'}</span>
@@ -483,7 +511,6 @@
         document.getElementById('ref-friends-list').innerHTML = listHtml;
       }
 
-      // Si llega a 3 o más referidos, mostrar caja para reclamar premio
       const claimBox = document.getElementById('claim-reward-box');
       if (count >= 3) {
         claimBox.classList.remove('hidden');
@@ -521,8 +548,9 @@
 
       let t = ticketsData[folioId];
       let msg = `*🎁 ¡RECLAMO DE PREMIO PROMO 3x1! 🎁*\n\n`;
-      msg += `👤 *Anfitrión / Referidor:* ${name}\n`;
+      msg += `👤 *Anfitrión:* ${name}\n`;
       msg += `📱 *Teléfono:* ${phone}\n`;
+      msg += `🔑 *Mi Código:* ${getMyUniqueCode()}\n`;
       msg += `✅ *Estatus:* He completado mis 3 referidos confirmados.\n`;
       msg += `🎁 *Folio de Regalo Solicitado:* #${folioId} (Números: ${t.num1} y ${t.num2})\n\n`;
       msg += `*Por favor valida mis referidos para asignarme este folio de regalo.*`;
@@ -530,12 +558,19 @@
       window.open(`https://wa.me/5216461978574?text=${encodeURIComponent(msg)}`, '_blank');
     }
 
-    function updateReferralLink() {
+    function saveUserData() {
       const name = document.getElementById('ref-user-name').value.trim();
+      const phone = document.getElementById('ref-user-phone').value.trim();
+      localStorage.setItem('kiwo_user_name', name);
+      localStorage.setItem('kiwo_user_phone', phone);
+      updateReferralLink();
+    }
+
+    function updateReferralLink() {
+      const myCode = getMyUniqueCode();
       const output = document.getElementById('ref-link-output');
-      if (!name) { output.value = "Ingresa tu nombre y teléfono arriba..."; return; }
       const baseUrl = window.location.href.split('?')[0];
-      output.value = `${baseUrl}?ref=${encodeURIComponent(name)}`;
+      output.value = `${baseUrl}?ref=${myCode}`;
       updateReferralProgress();
     }
 
@@ -543,14 +578,13 @@
       const output = document.getElementById('ref-link-output');
       if (output.value.startsWith('http')) {
         navigator.clipboard.writeText(output.value);
-        alert("¡Enlace copiado al portapapeles!");
+        alert("¡Enlace único copiado al portapapeles!");
       }
     }
 
     function shareWhatsApp() {
       const link = document.getElementById('ref-link-output').value;
-      if (!link.startsWith('http')) return alert("Ingresa tu nombre primero.");
-      const msg = `¡Hola! Apóyame comprando tu boleto de la Rifa Bicimoto KIWO ($50 MXN) usando mi enlace: ${link}`;
+      const msg = `¡Hola! Apóyame comprando tu boleto de la Rifa Bicimoto KIWO ($50 MXN) usando mi enlace inteligente: ${link}`;
       window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`, '_blank');
     }
 
@@ -576,7 +610,7 @@
           tr.innerHTML = `
             <td class="p-2 font-bold">#${f}</td>
             <td class="p-2">${t.num1}, ${t.num2}</td>
-            <td class="p-2">${t.buyer} (${t.phone}) ${t.refCode ? '<br><small class="text-amber-400">Ref de: '+t.refCode+'</small>' : ''}</td>
+            <td class="p-2">${t.buyer} (${t.phone}) ${t.refCode ? '<br><small class="text-amber-400">Código Ref: '+t.refCode+'</small>' : ''}</td>
             <td class="p-2">${t.status === 'sold' ? '🟢 Vendido' : '🟡 Apartado'}</td>
             <td class="p-2 text-right"><button onclick="liberarFolio('${f}')" class="px-2 py-1 bg-rose-600 text-white rounded text-[10px]">Liberar</button></td>
           `;
