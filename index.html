@@ -272,7 +272,7 @@
           <input type="tel" id="buyer-phone" required placeholder="Ej. 646 123 4567" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-400">
         </div>
 
-        <!-- CAMPO DE REFERIDO AUTOMÁTICO (INVISIBIBLE/BLOQUEADO PARA EVITAR ERRORES) -->
+        <!-- CAMPO DE REFERIDO AUTOMÁTICO -->
         <div id="ref-code-box" class="hidden bg-slate-950 p-2.5 rounded-lg border border-emerald-500/40">
           <span class="text-[10px] text-emerald-400 font-bold block">🎁 Invitado por: <span id="display-ref-name" class="text-white"></span></span>
           <input type="hidden" id="buyer-ref-code">
@@ -335,7 +335,6 @@
     let ticketsData = {};
     let selectedFolioStr = null;
 
-    // GENERAR O CARGAR CÓDIGO ÚNICO DEL USUARIO
     function getMyUniqueCode() {
       let code = localStorage.getItem('kiwo_my_ref_code');
       if (!code) {
@@ -346,7 +345,6 @@
     }
 
     window.onload = function() {
-      // Cargar datos guardados del usuario si ya los puso antes
       const savedName = localStorage.getItem('kiwo_user_name') || '';
       const savedPhone = localStorage.getItem('kiwo_user_phone') || '';
       if(savedName) document.getElementById('ref-user-name').value = savedName;
@@ -354,11 +352,15 @@
 
       updateReferralLink();
 
-      // Detectar si el usuario actual entró mediante un enlace de referido de alguien más (?ref=REF-XXXX)
-      const urlParams = new URLSearchParams(window.location.search);
-      const refParam = urlParams.get('ref');
+      // CORRECCIÓN: Detectar parámetro ?ref= sin importar si está antes o después del hash (#)
+      let refParam = new URLSearchParams(window.location.search).get('ref');
+      if (!refParam && window.location.hash.includes('?')) {
+        const hashQuery = window.location.hash.split('?')[1];
+        refParam = new URLSearchParams(hashQuery).get('ref');
+      }
+
       if (refParam) {
-        localStorage.setItem('kiwo_referred_by_code', refParam);
+        localStorage.setItem('kiwo_referred_by_code', decodeURIComponent(refParam));
       }
 
       startCountdown();
@@ -443,7 +445,6 @@
         <div class="bg-slate-900 p-2.5 rounded-lg border border-amber-500/30"><span class="text-[10px] text-slate-400 block">Número 2</span><span class="text-xl font-black text-amber-400">${t.num2}</span></div>
       `;
 
-      // Autocompletar el referido automáticamente si el usuario entró con enlace
       const refByCode = localStorage.getItem('kiwo_referred_by_code');
       if (refByCode) {
         document.getElementById('buyer-ref-code').value = refByCode;
@@ -459,7 +460,6 @@
 
     function closeFolioModal() { document.getElementById('folio-modal').classList.add('hidden'); }
 
-    // APARTADO Y MENSAJE WHATSAPP
     function handleBuyFolio(e) {
       e.preventDefault();
       const name = document.getElementById('buyer-name').value.trim();
@@ -487,7 +487,6 @@
       window.open(`https://wa.me/5216461978574?text=${encodeURIComponent(msg)}`, '_blank');
     }
 
-    // PROGRESO DE REFERIDOS AUTOMÁTICO
     function updateReferralProgress() {
       const myCode = getMyUniqueCode();
       let count = 0;
@@ -569,7 +568,7 @@
     function updateReferralLink() {
       const myCode = getMyUniqueCode();
       const output = document.getElementById('ref-link-output');
-      const baseUrl = window.location.href.split('?')[0];
+      const baseUrl = window.location.href.split('#')[0].split('?')[0];
       output.value = `${baseUrl}?ref=${myCode}`;
       updateReferralProgress();
     }
@@ -588,7 +587,6 @@
       window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`, '_blank');
     }
 
-    // PANEL ADMIN Y TÓMBOLA
     function openAdminModal() { document.getElementById('admin-modal').classList.remove('hidden'); }
     function closeAdminModal() { document.getElementById('admin-modal').classList.add('hidden'); }
     function checkAdminPin() {
